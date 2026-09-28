@@ -12,6 +12,8 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const path = require('path');
+const fs = require('fs');
 const { settingsRouter } = require('./routes/settingsRoutes');
 
 const app = express();
@@ -49,10 +51,23 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/settings', settingsRouter);
 
+// Serve static client assets if available
+const publicDir = path.join(__dirname, 'public');
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+}
+
 // 404 Handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ success: false, message: 'API route not found' });
 });
+
+// SPA catch-all fallback for frontend routes (like /services, /admin/login, /orders)
+if (fs.existsSync(publicDir)) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(publicDir, 'index.html'));
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, next) => {

@@ -5,18 +5,33 @@ const mongoose = require('mongoose');
 let mongod = null;
 
 const connectDB = async () => {
-  const defaultUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/vkdryclean';
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URL;
 
-  // 1. Try connecting to already running MongoDB
+  // 1. Try connecting to configured MongoDB (e.g. Railway MongoDB service or Atlas)
+  if (uri) {
+    try {
+      console.log(`Connecting to configured MongoDB...`);
+      await mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 5000,
+      });
+      console.log(`✅ MongoDB Connected successfully: ${mongoose.connection.host}`);
+      return;
+    } catch (err) {
+      console.error(`Configured MongoDB connection error: ${err.message}. Trying local fallback...`);
+    }
+  }
+
+  // 1b. Try default local uri
   try {
-    console.log(`Connecting to MongoDB at: ${defaultUri}`);
-    await mongoose.connect(defaultUri, {
+    const localUri = 'mongodb://127.0.0.1:27017/vkdryclean';
+    console.log(`Connecting to MongoDB at: ${localUri}`);
+    await mongoose.connect(localUri, {
       serverSelectionTimeoutMS: 2000,
     });
-    console.log(`✅ MongoDB Connected successfully: ${mongoose.connection.host}`);
+    console.log(`✅ Local MongoDB Connected successfully: ${mongoose.connection.host}`);
     return;
   } catch (err) {
-    console.log(`No active MongoDB on 27017. Initializing embedded database with persistent disk storage...`);
+    console.log(`No active local MongoDB on 27017. Initializing embedded database with persistent disk storage...`);
   }
 
   // 2. Start embedded MongoMemoryServer

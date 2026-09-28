@@ -1,15 +1,30 @@
 {
   "name": "vk-dry-clean",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "VK Dry Clean - Complete Full-Stack Web Application",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "build": "cd client && npm install && npm run build && cd .. && rm -rf server/public && cp -r client/dist server/public",
+    "postinstall": "npm install --prefix server",
     "server": "cd server && npm start",
     "client": "cd client && npm run dev",
     "dev": "node -e \"const { spawn } = require('child_process'); spawn('npm', ['start'], { cwd: './server', stdio: 'inherit' }); spawn('npm', ['run', 'dev'], { cwd: './client', stdio: 'inherit' });\""
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.109.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb-memory-server": "^9.2.0",
+    "mongoose": "^8.4.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^10.0.11",
+    "pg": "^8.23.0"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "author": "VK Dry Clean",
+  "license": "ISC"
 }
