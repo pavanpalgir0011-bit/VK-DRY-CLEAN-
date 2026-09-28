@@ -10,10 +10,20 @@ import {
   CheckCircle2, 
   AlertCircle,
   HelpCircle,
-  Receipt
+  Receipt,
+  MapPin,
+  Plus,
+  Trash2,
+  ToggleLeft,
+  ToggleRight,
+  Search,
+  Check,
+  X,
+  Globe
 } from 'lucide-react';
 import { settingsAPI } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import { INDIAN_STATES } from '../../data/indianStates';
 
 const AdminSettings = () => {
   const { addToast } = useToast();
@@ -31,6 +41,16 @@ const AdminSettings = () => {
     storeEmail: '',
   });
 
+  // Serviceable Cities & Coverage state
+  const [cities, setCities] = useState([]);
+  const [citySearch, setCitySearch] = useState('');
+  const [stateFilter, setStateFilter] = useState('All');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newCityName, setNewCityName] = useState('');
+  const [newCityState, setNewCityState] = useState('Delhi');
+  const [newCityEnabled, setNewCityEnabled] = useState(true);
+  const [togglingCity, setTogglingCity] = useState(null);
+
   const fetchSettings = async () => {
     setLoading(true);
     try {
@@ -45,6 +65,7 @@ const AdminSettings = () => {
           storeAddress: res.settings.storeAddress || '',
           storeEmail: res.settings.storeEmail || '',
         });
+        setCities(res.settings.serviceableCities || []);
       }
     } catch (err) {
       console.error('Failed to load settings:', err);
@@ -67,6 +88,74 @@ const AdminSettings = () => {
     setSavedSuccess(false);
   };
 
+  const handleToggleCity = async (cityName) => {
+    setTogglingCity(cityName);
+    try {
+      const res = await settingsAPI.adminToggleCity(cityName);
+      if (res.success) {
+        setCities((prev) =>
+          prev.map((c) =>
+            c.name.toLowerCase() === cityName.toLowerCase() ? { ...c, enabled: !c.enabled } : c
+          )
+        );
+        addToast(res.message, 'success');
+      }
+    } catch (err) {
+      console.error('Toggle city error:', err);
+      addToast(err.message || 'Failed to update city status.', 'error');
+    } finally {
+      setTogglingCity(null);
+    }
+  };
+
+  const handleAddCity = async (e) => {
+    e.preventDefault();
+    if (!newCityName.trim()) {
+      addToast('Please enter a valid city name.', 'error');
+      return;
+    }
+
+    try {
+      const res = await settingsAPI.adminAddCity({
+        name: newCityName.trim(),
+        state: newCityState.trim(),
+        enabled: newCityEnabled,
+      });
+
+      if (res.success) {
+        setCities(res.serviceableCities || [...cities, { name: newCityName.trim(), state: newCityState.trim(), enabled: newCityEnabled }]);
+        setNewCityName('');
+        setShowAddModal(false);
+        addToast(`City "${newCityName.trim()}" added to coverage zones!`, 'success');
+      }
+    } catch (err) {
+      console.error('Add city error:', err);
+      addToast(err.message || 'Failed to add city.', 'error');
+    }
+  };
+
+  const handleDeleteCity = async (cityName) => {
+    if (!window.confirm(`Are you sure you want to remove "${cityName}" from coverage?`)) return;
+    try {
+      const res = await settingsAPI.adminDeleteCity(cityName);
+      if (res.success) {
+        setCities((prev) => prev.filter((c) => c.name.toLowerCase() !== cityName.toLowerCase()));
+        addToast(`City "${cityName}" removed.`, 'success');
+      }
+    } catch (err) {
+      console.error('Delete city error:', err);
+      addToast(err.message || 'Failed to delete city.', 'error');
+    }
+  };
+
+  const handleEnableAllNCR = () => {
+    const ncrNames = ['New Delhi', 'South Delhi', 'West Delhi', 'North Delhi', 'East Delhi', 'Central Delhi', 'Noida', 'Greater Noida', 'Ghaziabad', 'Gurugram', 'Faridabad'];
+    setCities((prev) =>
+      prev.map((c) => (ncrNames.includes(c.name) ? { ...c, enabled: true } : c))
+    );
+    addToast('Enabled all Delhi NCR cities! Click "Save Settings" to persist.', 'success');
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -81,12 +170,13 @@ const AdminSettings = () => {
         storePhone: formData.storePhone.trim(),
         storeAddress: formData.storeAddress.trim(),
         storeEmail: formData.storeEmail.trim(),
+        serviceableCities: cities,
       };
 
       const res = await settingsAPI.adminUpdateSettings(payload);
       if (res.success) {
         setSavedSuccess(true);
-        addToast('Settings & tax configurations updated successfully!', 'success');
+        addToast('Settings, Pricing & Coverage zones updated successfully!', 'success');
       }
     } catch (err) {
       console.error('Save settings error:', err);
@@ -318,6 +408,278 @@ const AdminSettings = () => {
               </div>
             </div>
           </div>
+
+          {/* Card 4: Serviceable Cities & Order Coverage Management */}
+          <div className="card" style={{ padding: '1.75rem', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-sm)', background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '1.15rem', margin: 0, fontWeight: 700 }}>Serviceable Cities & Order Coverage</h3>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    Only cities enabled below will be allowed for doorstep dry-cleaning orders
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={handleEnableAllNCR}
+                  className="btn btn-outline btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem' }}
+                >
+                  <Check size={14} />
+                  <span>Enable All NCR</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(true)}
+                  className="btn btn-primary btn-sm"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.82rem' }}
+                >
+                  <Plus size={14} />
+                  <span>Add City</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Coverage Summary Stats */}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+              <div style={{ background: '#f8fafc', padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.82rem', fontWeight: 600, border: '1px solid var(--border-color)' }}>
+                Total Cities: <span style={{ color: 'var(--primary)', fontWeight: 800 }}>{cities.length}</span>
+              </div>
+              <div style={{ background: '#ecfdf5', padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.82rem', fontWeight: 600, color: '#065f46', border: '1px solid #a7f3d0' }}>
+                ● Active Coverage: <span style={{ fontWeight: 800 }}>{cities.filter(c => c.enabled).length}</span> cities
+              </div>
+              <div style={{ background: '#fef2f2', padding: '0.6rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.82rem', fontWeight: 600, color: '#991b1b', border: '1px solid #fecaca' }}>
+                ○ Orders Paused: <span style={{ fontWeight: 800 }}>{cities.filter(c => !c.enabled).length}</span> cities
+              </div>
+            </div>
+
+            {/* Filter and Search Bar */}
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+                <Search size={16} color="var(--text-light)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <input
+                  type="text"
+                  placeholder="Search city name..."
+                  className="form-input"
+                  style={{ paddingLeft: '36px', height: '38px', fontSize: '0.88rem' }}
+                  value={citySearch}
+                  onChange={(e) => setCitySearch(e.target.value)}
+                />
+              </div>
+
+              <select
+                className="form-select"
+                style={{ width: '220px', height: '38px', fontSize: '0.88rem' }}
+                value={stateFilter}
+                onChange={(e) => setStateFilter(e.target.value)}
+              >
+                <option value="All">All States / UTs</option>
+                {Array.from(new Set(cities.map((c) => c.state))).map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Cities Grid List */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: '0.85rem',
+                maxHeight: '380px',
+                overflowY: 'auto',
+                paddingRight: '4px',
+              }}
+            >
+              {cities
+                .filter((c) => {
+                  const matchSearch = c.name.toLowerCase().includes(citySearch.toLowerCase());
+                  const matchState = stateFilter === 'All' || c.state === stateFilter;
+                  return matchSearch && matchState;
+                })
+                .map((city) => (
+                  <div
+                    key={`${city.name}-${city.state}`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      background: city.enabled ? '#ffffff' : '#f8fafc',
+                      border: `1.5px solid ${city.enabled ? '#10b981' : 'var(--border-color)'}`,
+                      borderRadius: 'var(--radius-md)',
+                      transition: 'all 0.2s ease',
+                      boxShadow: city.enabled ? '0 2px 8px rgba(16, 185, 129, 0.08)' : 'none',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: '0.92rem', color: city.enabled ? 'var(--text-main)' : 'var(--text-muted)' }}>
+                        {city.name}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        {city.state}
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => handleToggleCity(city.name)}
+                        disabled={togglingCity === city.name}
+                        title={city.enabled ? 'Click to Pause Orders in this city' : 'Click to Enable Orders in this city'}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                          background: city.enabled ? '#ecfdf5' : '#f1f5f9',
+                          border: `1px solid ${city.enabled ? '#a7f3d0' : '#cbd5e1'}`,
+                          color: city.enabled ? '#059669' : '#64748b',
+                          borderRadius: '20px',
+                          padding: '0.25rem 0.65rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {city.enabled ? <ToggleRight size={18} color="#059669" /> : <ToggleLeft size={18} color="#64748b" />}
+                        <span>{city.enabled ? 'Active' : 'Disabled'}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteCity(city.name)}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: '#ef4444',
+                          cursor: 'pointer',
+                          padding: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                        title={`Delete ${city.name}`}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            <div style={{ marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <AlertCircle size={15} color="var(--primary)" />
+              <span>
+                Customers during Checkout & Profile updates will strictly only see and be able to book orders for <strong>Active</strong> cities.
+              </span>
+            </div>
+          </div>
+
+          {/* Add City Modal */}
+          {showAddModal && (
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                backdropFilter: 'blur(4px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1000,
+                padding: '1rem',
+              }}
+            >
+              <div
+                className="card"
+                style={{
+                  width: '100%',
+                  maxWidth: '460px',
+                  padding: '1.75rem',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)',
+                  borderRadius: 'var(--radius-lg)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                  <h3 style={{ fontSize: '1.2rem', margin: 0, fontWeight: 700 }}>Add New Serviceable City</h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                  <label className="form-label" style={{ fontWeight: 600 }}>State / Territory *</label>
+                  <select
+                    className="form-select"
+                    value={newCityState}
+                    onChange={(e) => setNewCityState(e.target.value)}
+                    required
+                  >
+                    {INDIAN_STATES.map((st) => (
+                      <option key={st} value={st}>
+                        {st}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                  <label className="form-label" style={{ fontWeight: 600 }}>City / Area Name *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="e.g. Gurugram, Dwarka, Noida Sector 62"
+                    value={newCityName}
+                    onChange={(e) => setNewCityName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}>
+                  <input
+                    type="checkbox"
+                    id="newCityEnabled"
+                    checked={newCityEnabled}
+                    onChange={(e) => setNewCityEnabled(e.target.checked)}
+                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                  />
+                  <label htmlFor="newCityEnabled" style={{ fontSize: '0.9rem', cursor: 'pointer', fontWeight: 500 }}>
+                    Enable doorstep orders immediately for this city
+                  </label>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    className="btn btn-outline"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAddCity}
+                    className="btn btn-primary"
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                  >
+                    <Check size={16} />
+                    <span>Add to Coverage</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Live Preview of Calculations */}
           <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', marginBottom: '2.5rem' }}>

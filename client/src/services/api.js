@@ -128,6 +128,11 @@ export const ordersAPI = {
     request(`/orders/admin/orders/${id}/send-invoice`, {
       method: 'POST',
     }),
+
+  sendCustomerInvoice: (id) =>
+    request(`/orders/${id}/email-invoice`, {
+      method: 'POST',
+    }),
 };
 
 // Admin Metrics & Customer API
@@ -142,15 +147,29 @@ export const adminAPI = {
   getCustomerById: (id) => request(`/admin/customers/${id}`),
 };
 
-// Settings API (Delivery fee, Free threshold, GST rate, Store info)
+// Settings API (Delivery fee, Free threshold, GST rate, Store info, Serviceable Cities)
 export const settingsAPI = {
   getSettings: () => request('/settings'),
   getPublicSettings: () => request('/settings'),
+  getServiceableCities: () => request('/settings/cities'),
   adminGetSettings: () => request('/admin/settings'),
   adminUpdateSettings: (settingsData) =>
     request('/admin/settings', {
       method: 'PUT',
       body: JSON.stringify(settingsData),
+    }),
+  adminAddCity: (cityData) =>
+    request('/admin/settings/cities', {
+      method: 'POST',
+      body: JSON.stringify(cityData),
+    }),
+  adminToggleCity: (cityName) =>
+    request(`/admin/settings/cities/${encodeURIComponent(cityName)}/toggle`, {
+      method: 'PUT',
+    }),
+  adminDeleteCity: (cityName) =>
+    request(`/admin/settings/cities/${encodeURIComponent(cityName)}`, {
+      method: 'DELETE',
     }),
 };
 

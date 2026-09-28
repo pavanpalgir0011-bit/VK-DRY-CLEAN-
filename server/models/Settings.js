@@ -38,6 +38,33 @@ const settingsSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    serviceableCities: {
+      type: [
+        {
+          name: { type: String, required: true, trim: true },
+          state: { type: String, required: true, trim: true },
+          enabled: { type: Boolean, default: true },
+          pincodes: [{ type: String, trim: true }],
+        },
+      ],
+      default: () => [
+        { name: 'New Delhi', state: 'Delhi', enabled: true },
+        { name: 'South Delhi', state: 'Delhi', enabled: true },
+        { name: 'West Delhi', state: 'Delhi', enabled: true },
+        { name: 'North Delhi', state: 'Delhi', enabled: true },
+        { name: 'East Delhi', state: 'Delhi', enabled: true },
+        { name: 'Central Delhi', state: 'Delhi', enabled: true },
+        { name: 'Noida', state: 'Uttar Pradesh', enabled: true },
+        { name: 'Greater Noida', state: 'Uttar Pradesh', enabled: true },
+        { name: 'Ghaziabad', state: 'Uttar Pradesh', enabled: true },
+        { name: 'Gurugram', state: 'Haryana', enabled: true },
+        { name: 'Faridabad', state: 'Haryana', enabled: true },
+        { name: 'Mumbai', state: 'Maharashtra', enabled: false },
+        { name: 'Bengaluru', state: 'Karnataka', enabled: false },
+        { name: 'Chandigarh', state: 'Chandigarh', enabled: false },
+        { name: 'Jaipur', state: 'Rajasthan', enabled: false },
+      ],
+    },
   },
   { timestamps: true }
 );

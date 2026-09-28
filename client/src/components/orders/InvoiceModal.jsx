@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Printer, Download, X, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
-import { settingsAPI } from '../../services/api';
+import { Printer, Download, X, Sparkles, CheckCircle2, ShieldCheck, Mail, RefreshCw } from 'lucide-react';
+import { settingsAPI, ordersAPI } from '../../services/api';
+import { useToast } from '../../context/ToastContext';
 
 // Number to Words converter for Indian Rupees
 const numberToWords = (num) => {
@@ -63,10 +64,29 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
     };
   }, []);
 
+  const { addToast } = useToast();
+  const [emailing, setEmailing] = useState(false);
+
   if (!isOpen || !order) return null;
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleEmailInvoice = async () => {
+    if (!order) return;
+    setEmailing(true);
+    try {
+      const res = await ordersAPI.sendCustomerInvoice(order.orderId);
+      if (res.success) {
+        addToast(res.message || `Tax Invoice sent to ${order.customer?.email} successfully!`, 'success');
+      }
+    } catch (err) {
+      console.error('Invoice email error:', err);
+      addToast(err.message || 'Failed to send invoice email.', 'error');
+    } finally {
+      setEmailing(false);
+    }
   };
 
   const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace('VK-2026-', '') || '1001'}`;
@@ -93,7 +113,17 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
             <span>Tax Invoice #{invoiceNum}</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button
+              onClick={handleEmailInvoice}
+              disabled={emailing}
+              className="btn btn-outline btn-sm"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+              title={`Send PDF & HTML Invoice to ${order.customer?.email || 'customer email'}`}
+            >
+              <Mail size={15} />
+              <span>{emailing ? 'Sending...' : 'Email Invoice'}</span>
+            </button>
             <button onClick={handlePrint} className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <Printer size={16} />
               <span>Print / Save PDF</span>

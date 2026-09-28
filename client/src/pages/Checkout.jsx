@@ -16,8 +16,8 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
-import { ordersAPI } from '../services/api';
+import { ordersAPI, settingsAPI } from '../services/api';
+import { INDIAN_STATES } from '../data/indianStates';
 
 const TIME_SLOTS = [
   '08:00 AM - 10:00 AM',
@@ -54,8 +54,47 @@ const Checkout = () => {
     paymentMethod: 'Cash on Delivery',
   });
 
+  const [serviceableCities, setServiceableCities] = useState([]);
+  const [activeCities, setActiveCities] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Load live serviceable cities from backend settings
+  useEffect(() => {
+    let isMounted = true;
+    settingsAPI
+      .getPublicSettings()
+      .then((res) => {
+        if (isMounted && res.success && res.settings) {
+          const allCities = res.settings.serviceableCities || [];
+          const active = allCities.filter((c) => c.enabled);
+          setServiceableCities(allCities);
+          setActiveCities(active);
+
+          // If city not set or city is not active, auto-select first active city
+          setFormData((prev) => {
+            const currentCityActive = active.some(
+              (c) => c.name.toLowerCase() === (prev.city || '').toLowerCase()
+            );
+            if (!currentCityActive && active.length > 0) {
+              return {
+                ...prev,
+                city: active[0].name,
+                state: prev.state || active[0].state,
+              };
+            }
+            return prev;
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load serviceable cities:', err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,6 +118,19 @@ const Checkout = () => {
     if (!formData.address || !formData.city || !formData.pincode) {
       setErrorMsg('Please provide a complete pickup address (street, city, pincode).');
       return;
+    }
+
+    // Strict validation: Only allow placing orders in enabled serviceable cities
+    if (activeCities.length > 0) {
+      const isAllowed = activeCities.some(
+        (c) => c.name.toLowerCase() === (formData.city || '').trim().toLowerCase()
+      );
+      if (!isAllowed) {
+        const allowedList = activeCities.map((c) => c.name).join(', ');
+        setErrorMsg(`Doorstep pickup is currently not available in "${formData.city}". We are actively serving in: ${allowedList}.`);
+        addToast(`Delivery is not available in "${formData.city}"`, 'error');
+        return;
+      }
     }
 
     if (!formData.pickupDate || !formData.pickupTime) {
@@ -238,18 +290,81 @@ const Checkout = () => {
                 </div>
 
                 <div className="form-row">
+                  {/* State Selection Dropdown */}
                   <div className="form-group">
-                    <label className="form-label">City *</label>
-                    <input
-                      type="text"
+                    <label className="form-label" style={{ fontWeight: 600 }}>State / Territory *</label>
+                    <select
+                      name="state"
+                      className="form-select"
+                      value={formData.state}
+                      onChange={(e) => {
+                        const selectedState = e.target.value;
+                        const stateCities = activeCities.filter(
+                          (c) => c.state.toLowerCase() === selectedState.toLowerCase()
+                        );
+                        setFormData((prev) => ({
+                          ...prev,
+                          state: selectedState,
+                          city: stateCities.length > 0 ? stateCities[0].name : '',
+                        }));
+                      }}
+                      required
+                    >
+                      <option value="">-- Select State --</option>
+                      {INDIAN_STATES.map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* City Selection Dropdown (Only Active Cities Enabled by Admin) */}
+                  <div className="form-group">
+                    <label className="form-label" style={{ fontWeight: 600, display: 'flex', justifyContent: 'space-between' }}>
+                      <span>City / Service Zone *</span>
+                      <span style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 700 }}>
+                        🟢 Active Doorstep
+                      </span>
+                    </label>
+                    <select
                       name="city"
-                      className="form-input"
+                      className="form-select"
                       value={formData.city}
                       onChange={handleChange}
                       required
-                    />
+                    >
+                      <option value="">-- Select Active City --</option>
+                      {activeCities
+                        .filter(
+                          (c) => !formData.state || c.state.toLowerCase() === formData.state.toLowerCase()
+                        )
+                        .map((c) => (
+                          <option key={`${c.name}-${c.state}`} value={c.name}>
+                            {c.name} ({c.state})
+                          </option>
+                        ))}
+                      {formData.state &&
+                        activeCities.filter(
+                          (c) => c.state.toLowerCase() === formData.state.toLowerCase()
+                        ).length === 0 && (
+                          <option disabled value="">
+                            No active pickup in {formData.state} currently
+                          </option>
+                        )}
+                    </select>
+                    {formData.state &&
+                      activeCities.filter(
+                        (c) => c.state.toLowerCase() === formData.state.toLowerCase()
+                      ).length === 0 && (
+                        <div style={{ fontSize: '0.78rem', color: '#dc2626', marginTop: '0.35rem' }}>
+                          ⚠️ Doorstep pickup is currently active in: {activeCities.map((c) => c.name).join(', ')}.
+                        </div>
+                      )}
                   </div>
+                </div>
 
+                <div className="form-row">
                   <div className="form-group">
                     <label className="form-label">Pincode *</label>
                     <input
@@ -260,19 +375,6 @@ const Checkout = () => {
                       value={formData.pincode}
                       onChange={handleChange}
                       required
-                    />
-                  </div>
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    <label className="form-label">State</label>
-                    <input
-                      type="text"
-                      name="state"
-                      className="form-input"
-                      value={formData.state}
-                      onChange={handleChange}
                     />
                   </div>
 

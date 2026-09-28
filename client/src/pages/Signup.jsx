@@ -12,7 +12,8 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     address: '',
-    city: 'New Delhi',
+    city: '',
+    state: '',
     pincode: '',
   });
 

@@ -4,7 +4,11 @@ const Order = require('../models/Order');
 const Service = require('../models/Service');
 const Settings = require('../models/Settings');
 const postgres = require('../config/postgres');
-const { sendNewOrderNotification, sendCustomerInvoiceEmail } = require('../utils/emailService');
+const { 
+  sendNewOrderNotification, 
+  sendCustomerInvoiceEmail, 
+  sendCustomerOrderConfirmationEmail 
+} = require('../utils/emailService');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 // Generate unique readable order ID e.g. VK-2026-8492
@@ -32,6 +36,21 @@ router.post('/', requireAuth, async (req, res) => {
         success: false,
         message: 'Please provide a complete pickup address (street, city, pincode).',
       });
+    }
+
+    // Verify pickup city is enabled in live Admin Settings
+    const liveSettings = await Settings.findOne();
+    const activeCities = (liveSettings?.serviceableCities || []).filter((c) => c.enabled);
+    if (activeCities.length > 0) {
+      const orderCity = (pickupAddress.city || '').trim().toLowerCase();
+      const isCityActive = activeCities.some((c) => c.name.trim().toLowerCase() === orderCity);
+      if (!isCityActive) {
+        const allowedCities = activeCities.map((c) => c.name).join(', ');
+        return res.status(400).json({
+          success: false,
+          message: `Delivery is currently not available in "${pickupAddress.city}". We are actively serving in: ${allowedCities}.`,
+        });
+      }
     }
 
     if (!pickupDate || !pickupTime) {
@@ -124,7 +143,9 @@ router.post('/', requireAuth, async (req, res) => {
       pickupAddress: {
         address: pickupAddress.address.trim(),
         city: pickupAddress.city.trim(),
-        state: pickupAddress.state ? pickupAddress.state.trim() : 'Delhi',
+        state: pickupAddress.state
+          ? pickupAddress.state.trim()
+          : (activeCities.find((c) => c.name.toLowerCase() === pickupAddress.city.trim().toLowerCase())?.state || ''),
         pincode: pickupAddress.pincode.trim(),
         landmark: pickupAddress.landmark ? pickupAddress.landmark.trim() : '',
       },
@@ -182,7 +203,12 @@ router.post('/', requireAuth, async (req, res) => {
 
     // Instantly send email notification to admin with full order breakdown
     sendNewOrderNotification(order).catch((mailErr) => {
-      console.warn('Order email notification deferred:', mailErr.message);
+      console.warn('Admin order email notification deferred:', mailErr.message);
+    });
+
+    // Send order confirmation & schedule details to customer email
+    sendCustomerOrderConfirmationEmail(order, liveSettings || {}).catch((custMailErr) => {
+      console.warn('Customer order confirmation email deferred:', custMailErr.message);
     });
 
     res.status(201).json({
@@ -446,11 +472,52 @@ router.post('/admin/orders/:id/send-invoice', requireAdmin, async (req, res) => 
     } else {
       res.status(500).json({
         success: false,
-        message: mailRes.message || 'Failed to email invoice. Please check SMTP configuration.',
+        message: mailRes.message || mailRes.error || 'Failed to email invoice. Please check SMTP configuration.',
       });
     }
   } catch (error) {
     console.error('Send invoice email error:', error);
+    res.status(500).json({ success: false, message: error.message || 'Server error sending invoice.' });
+  }
+});
+
+// @route   POST /api/orders/:id/email-invoice
+// @desc    Email invoice to customer (accessible by order owner or admin)
+router.post('/:id/email-invoice', requireAuth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    let order = null;
+    if (id.startsWith('VK-')) {
+      order = await Order.findOne({ orderId: id });
+    } else {
+      order = await Order.findById(id);
+    }
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found.' });
+    }
+
+    // Security check: Must be the order's customer or an admin
+    if (order.userId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Unauthorized to access this order invoice.' });
+    }
+
+    const liveSettings = await Settings.findOne();
+    const mailRes = await sendCustomerInvoiceEmail(order, liveSettings || {});
+
+    if (mailRes.success) {
+      res.json({
+        success: true,
+        message: `Tax Invoice sent to your email (${order.customer?.email}) successfully!`,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: mailRes.message || mailRes.error || 'Failed to email invoice. Please try again later.',
+      });
+    }
+  } catch (error) {
+    console.error('Customer email invoice error:', error);
     res.status(500).json({ success: false, message: error.message || 'Server error sending invoice.' });
   }
 });

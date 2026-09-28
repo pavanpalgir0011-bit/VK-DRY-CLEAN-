@@ -1,3 +1,7 @@
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const nodemailer = require('nodemailer');
 
 // Create reusable transporter object using SMTP transport
@@ -18,6 +22,10 @@ const getTransporter = () => {
     port,
     secure,
     auth: { user, pass },
+    family: 4, // Enforce IPv4 to avoid ENETUNREACH in Railway / cloud containers
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
     tls: {
       rejectUnauthorized: false, // Helps avoid self-signed or proxy TLS issues
     },
@@ -349,12 +357,145 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Failed to dispatch customer invoice email:', error.message);
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, message: error.message };
+  }
+};
+
+/**
+ * Send Order Placement Confirmation email to customer
+ * @param {Object} order - Full order object
+ * @param {Object} storeSettings - Live store official settings
+ */
+const sendCustomerOrderConfirmationEmail = async (order, storeSettings = {}) => {
+  try {
+    const customerEmail = order.customer?.email;
+    if (!customerEmail) {
+      return { success: false, message: 'Customer email missing' };
+    }
+
+    const transporter = getTransporter();
+    if (!transporter) {
+      return { success: false, message: 'SMTP not configured' };
+    }
+
+    const storePhone = storeSettings?.storePhone || '+91 98765 43210';
+    const storeEmail = storeSettings?.storeEmail || process.env.EMAIL_USER || 'support@vkdryclean.com';
+
+    const itemsRows = (order.items || [])
+      .map(
+        (item, idx) => `
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px; color: #64748b; text-align: center;">${idx + 1}</td>
+          <td style="padding: 10px; font-weight: 600; color: #0f172a;">${item.name}</td>
+          <td style="padding: 10px; text-align: center;">${item.quantity} ${item.unit || 'Pc'}</td>
+          <td style="padding: 10px; text-align: right;">₹${item.price}</td>
+          <td style="padding: 10px; text-align: right; font-weight: 700;">₹${item.price * item.quantity}</td>
+        </tr>
+      `
+      )
+      .join('');
+
+    const htmlContent = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; padding: 26px 24px; text-align: center;">
+          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">VK DRY CLEAN</h1>
+          <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.95;">Doorstep Pickup Confirmed 🎉</p>
+        </div>
+
+        <div style="padding: 24px;">
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;">
+            <div style="font-size: 15px; font-weight: 700; color: #166534;">Thank you for your order, ${order.customer?.name || 'Customer'}!</div>
+            <div style="font-size: 13px; color: #15803d; margin-top: 4px;">
+              Your order <strong>#${order.orderId}</strong> has been received and scheduled for doorstep collection.
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 20px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="color: #64748b;">Scheduled Pickup:</span>
+              <strong style="color: #1e3a8a;">${order.pickupDate} (${order.pickupTime})</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="color: #64748b;">Pickup Address:</span>
+              <span style="color: #0f172a; text-align: right; max-width: 60%;">${order.pickupAddress?.address}, ${order.pickupAddress?.city} — ${order.pickupAddress?.pincode}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748b;">Payment Method:</span>
+              <span style="color: #0284c7; font-weight: 600;">${order.paymentMethod || 'Cash on Delivery'}</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 14px; text-transform: uppercase; color: #475569; margin: 0 0 8px 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px;">Order Summary</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+            <thead>
+              <tr style="background-color: #f1f5f9; text-align: left;">
+                <th style="padding: 8px; width: 30px; text-align: center;">#</th>
+                <th style="padding: 8px;">Service</th>
+                <th style="padding: 8px; text-align: center;">Qty</th>
+                <th style="padding: 8px; text-align: right;">Rate</th>
+                <th style="padding: 8px; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsRows}
+            </tbody>
+          </table>
+
+          <div style="background: #f8fafc; border-radius: 8px; padding: 14px; margin-bottom: 20px; font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #64748b;">
+              <span>Garments Subtotal:</span>
+              <span style="font-weight: 600; color: #0f172a;">₹${order.subtotal}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #64748b;">
+              <span>Pickup & Delivery:</span>
+              <span style="font-weight: 600; color: #0f172a;">${order.deliveryFee === 0 ? '<strong style="color: #16a34a;">FREE</strong>' : `₹${order.deliveryFee}`}</span>
+            </div>
+            ${order.gstRate > 0 ? `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #64748b;">
+              <span>GST (${order.gstRate}%):</span>
+              <span style="font-weight: 600; color: #0f172a;">₹${order.gstAmount || 0}</span>
+            </div>
+            ` : ''}
+            <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px dashed #cbd5e1; font-size: 16px; font-weight: 800; color: #1e3a8a;">
+              <span>Total Payable:</span>
+              <span>₹${order.total}</span>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-bottom: 16px;">
+            <a href="${process.env.CLIENT_URL || 'https://vkdryclean.up.railway.app'}/orders/${order.orderId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px;">
+              Track Order Live &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div style="background-color: #f8fafc; padding: 16px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
+          VK Dry Clean • Quality You Can Wear<br />
+          Helpline: ${storePhone} • Email: ${storeEmail}
+        </div>
+      </div>
+    `;
+
+    const mailOptions = {
+      from: `"VK Dry Clean" <${process.env.EMAIL_USER || storeEmail}>`,
+      to: customerEmail,
+      subject: `🧺 Order Confirmation #${order.orderId} - Scheduled for ${order.pickupDate} | VK Dry Clean`,
+      text: `Dear ${order.customer?.name},\n\nYour order #${order.orderId} has been placed successfully!\nPickup Date: ${order.pickupDate} (${order.pickupTime})\nTotal: ₹${order.total}.\n\nThank you for choosing VK Dry Clean!`,
+      html: htmlContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`✅ Order confirmation sent to customer ${customerEmail} for order #${order.orderId}: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('❌ Failed to dispatch order confirmation email to customer:', error.message);
+    return { success: false, error: error.message, message: error.message };
   }
 };
 
 module.exports = {
   sendNewOrderNotification,
   sendCustomerInvoiceEmail,
+  sendCustomerOrderConfirmationEmail,
   getTransporter,
 };

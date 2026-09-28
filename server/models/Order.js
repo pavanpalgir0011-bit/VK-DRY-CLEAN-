@@ -106,7 +106,7 @@ const orderSchema = new mongoose.Schema(
     pickupAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
-      state: { type: String, default: 'Delhi' },
+      state: { type: String, default: '' },
       pincode: { type: String, required: true },
       landmark: { type: String, default: '' },
     },

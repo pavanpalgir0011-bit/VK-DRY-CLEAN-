@@ -11,12 +11,14 @@ import {
   RefreshCw,
   ShoppingBag,
   HelpCircle,
-  Receipt
+  Receipt,
+  Mail
 } from 'lucide-react';
 import { ordersAPI } from '../services/api';
 import OrderTimeline from '../components/orders/OrderTimeline';
 import StatusBadge from '../components/common/StatusBadge';
 import InvoiceModal from '../components/orders/InvoiceModal';
+import { useToast } from '../context/ToastContext';
 
 const OrderTracking = () => {
   const { id } = useParams();
@@ -24,6 +26,24 @@ const OrderTracking = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const [sendingInvoice, setSendingInvoice] = useState(false);
+  const { addToast } = useToast();
+
+  const handleEmailInvoice = async () => {
+    if (!order) return;
+    setSendingInvoice(true);
+    try {
+      const res = await ordersAPI.sendCustomerInvoice(order.orderId);
+      if (res.success) {
+        addToast(res.message || `Tax Invoice successfully sent to ${order.customer?.email}!`, 'success');
+      }
+    } catch (err) {
+      console.error('Invoice email error:', err);
+      addToast(err.message || 'Failed to send invoice email.', 'error');
+    } finally {
+      setSendingInvoice(false);
+    }
+  };
 
   const fetchOrder = async () => {
     setLoading(true);
@@ -87,6 +107,16 @@ const OrderTracking = () => {
             >
               <Receipt size={14} />
               <span>Tax Invoice</span>
+            </button>
+            <button
+              onClick={handleEmailInvoice}
+              disabled={sendingInvoice}
+              className="btn btn-outline btn-sm"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+              title={`Email a copy of the tax invoice to ${order.customer?.email}`}
+            >
+              <Mail size={14} />
+              <span>{sendingInvoice ? 'Emailing...' : 'Email Invoice'}</span>
             </button>
             <button
               onClick={fetchOrder}

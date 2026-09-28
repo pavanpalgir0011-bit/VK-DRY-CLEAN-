@@ -14,7 +14,8 @@ dist/
 build/
 client/dist/
 server/data/
-data/
+/data/
+!client/src/data/
 
 # OS and Editor files
 .DS_Store

@@ -175,10 +175,10 @@ router.get('/settings', async (req, res) => {
 });
 
 // @route   PUT /api/admin/settings
-// @desc    Update system settings (delivery fee, free delivery threshold, GST rate)
+// @desc    Update system settings (delivery fee, free delivery threshold, GST rate, serviceable cities)
 router.put('/settings', async (req, res) => {
   try {
-    const { deliveryFee, freeDeliveryThreshold, gstRate, gstNumber, storePhone, storeAddress, storeEmail } = req.body;
+    const { deliveryFee, freeDeliveryThreshold, gstRate, gstNumber, storePhone, storeAddress, storeEmail, serviceableCities } = req.body;
     let settings = await Settings.findOne();
     if (!settings) {
       settings = new Settings();
@@ -191,6 +191,9 @@ router.put('/settings', async (req, res) => {
     if (storePhone !== undefined) settings.storePhone = storePhone.trim();
     if (storeAddress !== undefined) settings.storeAddress = storeAddress.trim();
     if (storeEmail !== undefined) settings.storeEmail = storeEmail.trim();
+    if (serviceableCities !== undefined && Array.isArray(serviceableCities)) {
+      settings.serviceableCities = serviceableCities;
+    }
 
     await settings.save();
 
@@ -206,6 +209,7 @@ router.put('/settings', async (req, res) => {
             store_address = $6, 
             store_email = $7, 
             updated_at = NOW()
+        WHERE id = (SELECT id FROM settings LIMIT 1) OR 1=1
       `, [
         settings.deliveryFee,
         settings.freeDeliveryThreshold,
@@ -221,12 +225,119 @@ router.put('/settings', async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Pricing, Delivery & GST settings updated successfully in Supabase & Backend!',
+      message: 'Pricing, Delivery, GST & City Coverage settings updated successfully!',
       settings,
     });
   } catch (error) {
     console.error('Admin update settings error:', error);
     res.status(500).json({ success: false, message: 'Failed to update settings.' });
+  }
+});
+
+// @route   POST /api/admin/settings/cities
+// @desc    Add a new serviceable city
+router.post('/settings/cities', async (req, res) => {
+  try {
+    const { name, state, enabled, pincodes } = req.body;
+    if (!name || !state) {
+      return res.status(400).json({ success: false, message: 'City name and state are required.' });
+    }
+
+    let settings = await Settings.findOne();
+    if (!settings) {
+      settings = new Settings();
+    }
+
+    const trimmedName = name.trim();
+    const trimmedState = state.trim();
+
+    // Check if city already exists
+    const exists = (settings.serviceableCities || []).some(
+      (c) => c.name.toLowerCase() === trimmedName.toLowerCase() && c.state.toLowerCase() === trimmedState.toLowerCase()
+    );
+
+    if (exists) {
+      return res.status(400).json({ success: false, message: `City "${trimmedName}" in "${trimmedState}" already exists.` });
+    }
+
+    settings.serviceableCities.push({
+      name: trimmedName,
+      state: trimmedState,
+      enabled: enabled !== undefined ? !!enabled : true,
+      pincodes: Array.isArray(pincodes) ? pincodes : [],
+    });
+
+    await settings.save();
+
+    res.status(201).json({
+      success: true,
+      message: `City "${trimmedName}" added successfully!`,
+      serviceableCities: settings.serviceableCities,
+    });
+  } catch (error) {
+    console.error('Add city error:', error);
+    res.status(500).json({ success: false, message: 'Failed to add city.' });
+  }
+});
+
+// @route   PUT /api/admin/settings/cities/:cityName/toggle
+// @desc    Toggle enabled status for a city
+router.put('/settings/cities/:cityName/toggle', async (req, res) => {
+  try {
+    const cityName = decodeURIComponent(req.params.cityName).trim();
+    let settings = await Settings.findOne();
+    if (!settings) {
+      return res.status(404).json({ success: false, message: 'Settings record not found.' });
+    }
+
+    const cityIndex = (settings.serviceableCities || []).findIndex(
+      (c) => c.name.toLowerCase() === cityName.toLowerCase()
+    );
+
+    if (cityIndex === -1) {
+      return res.status(404).json({ success: false, message: `City "${cityName}" not found.` });
+    }
+
+    settings.serviceableCities[cityIndex].enabled = !settings.serviceableCities[cityIndex].enabled;
+    await settings.save();
+
+    const updatedCity = settings.serviceableCities[cityIndex];
+    res.json({
+      success: true,
+      message: `City "${updatedCity.name}" is now ${updatedCity.enabled ? 'ACTIVE (Orders allowed)' : 'INACTIVE (Orders paused)'}.`,
+      city: updatedCity,
+      serviceableCities: settings.serviceableCities,
+    });
+  } catch (error) {
+    console.error('Toggle city error:', error);
+    res.status(500).json({ success: false, message: 'Failed to toggle city.' });
+  }
+});
+
+// @route   DELETE /api/admin/settings/cities/:cityName
+// @desc    Delete a serviceable city
+router.delete('/settings/cities/:cityName', async (req, res) => {
+  try {
+    const cityName = decodeURIComponent(req.params.cityName).trim();
+    let settings = await Settings.findOne();
+    if (!settings) {
+      return res.status(404).json({ success: false, message: 'Settings record not found.' });
+    }
+
+    settings.serviceableCities = (settings.serviceableCities || []).filter(
+      (c) => c.name.toLowerCase() !== cityName.toLowerCase()
+    );
+
+    await settings.save();
+
+    res.json({
+      success: true,
+      message: `City "${cityName}" removed successfully!`,
+      serviceableCities: settings.serviceableCities,
+    });
+  } catch (error) {
+    console.error('Delete city error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete city.' });
   }
 });
 
