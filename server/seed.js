@@ -1,36 +1,21 @@
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 const Service = require('./models/Service');
-const Order = require('./models/Order');
-const ContactMessage = require('./models/ContactMessage');
 const postgres = require('./config/postgres');
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'pavanpalgir0011@gmail.com';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Himanshu@123';
 const ADMIN_NAME = process.env.ADMIN_NAME || 'Vikas';
 
+/**
+ * Safe Production Initializer
+ * CRITICAL: NEVER delete or wipe services, orders, or customer data on server restart!
+ */
 const seedInitialData = async () => {
   try {
-    console.log('--- Initializing Clean Production Setup for VK Dry Clean ---');
+    console.log('--- Initializing Safe Production Verification for VK Dry Clean ---');
 
-    // 1. Remove any legacy mock/demo users, mock orders, and mock contact messages
-    await User.deleteMany({ email: { $in: ['admin@vkdryclean.com', 'rahul@example.com'] } });
-    await Order.deleteMany({ $or: [{ orderId: { $in: ['VK-2026-1001', 'VK-2026-1002', 'VK-2026-1003'] } }, { 'customer.email': 'rahul@example.com' }] });
-    await ContactMessage.deleteMany({ email: { $in: ['priya@example.com', 'amit@example.com'] } });
-
-    // 2. Remove all seed mock services (Admin will add real services directly from Admin Panel)
-    await Service.deleteMany({});
-    try {
-      if (postgres && postgres.pool) {
-        await postgres.query('DELETE FROM services;');
-        console.log('✅ Cleared all mock services from Supabase PostgreSQL');
-      }
-    } catch (pgErr) {
-      console.warn('Postgres services cleanup notice:', pgErr.message);
-    }
-    console.log('✅ Cleaned up mock services from MongoDB and Supabase');
-
-    // 3. Setup / Update Administrator from Environment Variables (without mock address)
+    // 1. Ensure Admin user exists (do NOT delete any other users or services!)
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, salt);
 
@@ -47,35 +32,36 @@ const seedInitialData = async () => {
         pincode: '',
       });
       await admin.save();
-      console.log(`✅ Production Admin created from .env: ${ADMIN_EMAIL} (role: admin, name: ${ADMIN_NAME})`);
+      console.log(`✅ Production Admin created: ${ADMIN_EMAIL}`);
     } else {
-      admin.name = ADMIN_NAME;
+      // Keep admin credentials synced with .env, do not touch other data
       admin.role = 'admin';
+      admin.name = ADMIN_NAME;
       admin.password = hashedPassword;
-      admin.address = '';
-      admin.city = '';
-      admin.pincode = '';
       await admin.save();
-      console.log(`✅ Production Admin updated from .env: ${ADMIN_EMAIL} (role: admin, name: ${ADMIN_NAME}, mock address removed)`);
+      console.log(`✅ Production Admin verified: ${ADMIN_EMAIL}`);
     }
 
-    // 4. Update Admin in Supabase PostgreSQL (remove mock address)
+    // 2. Sync Admin in Supabase PostgreSQL if connected
     try {
       if (postgres && postgres.pool) {
         await postgres.query(`
-          UPDATE users 
-          SET address = '', city = '', pincode = '', name = $2, role = 'admin', password_hash = $3, updated_at = NOW()
-          WHERE email = $1;
-        `, [ADMIN_EMAIL, ADMIN_NAME, hashedPassword]);
-        console.log('✅ Synchronized clean Admin account in Supabase PostgreSQL (no mock address)');
+          INSERT INTO users (name, email, role, password_hash)
+          VALUES ($1, $2, 'admin', $3)
+          ON CONFLICT (email) DO UPDATE SET role = 'admin', password_hash = EXCLUDED.password_hash;
+        `, [ADMIN_NAME, ADMIN_EMAIL, hashedPassword]);
       }
     } catch (pgAdminErr) {
-      console.warn('Postgres admin update notice:', pgAdminErr.message);
+      console.warn('Postgres admin sync notice:', pgAdminErr.message);
     }
 
-    console.log('--- Production Initialization Complete (0 Mock Services, 0 Mock Addresses) ---');
+    // 3. Count existing services to ensure data persistence
+    const serviceCount = await Service.countDocuments();
+    console.log(`✅ Current Active Services in Database: ${serviceCount} (Data is protected and persistent)`);
+
+    console.log('--- Production Verification Complete (0 Data Deleted, All Records Preserved) ---');
   } catch (error) {
-    console.error('Error during data seeding:', error);
+    console.error('Error during data initialization:', error);
   }
 };
 

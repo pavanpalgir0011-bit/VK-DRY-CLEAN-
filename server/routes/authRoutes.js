@@ -227,7 +227,7 @@ router.get('/me', requireAuth, async (req, res) => {
 // @desc    Update user profile & delivery address (disallow changing role, id, firebaseUid)
 router.put('/profile', requireAuth, async (req, res) => {
   try {
-    const { name, phone, address, city, state, pincode, landmark } = req.body;
+    const { name, phone, address, city, state, pincode, landmark, alternatePhone, gender, addressType } = req.body;
 
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -241,6 +241,9 @@ router.put('/profile', requireAuth, async (req, res) => {
     if (state !== undefined) user.state = state.trim();
     if (pincode !== undefined) user.pincode = pincode.trim();
     if (landmark !== undefined) user.landmark = landmark.trim();
+    if (alternatePhone !== undefined) user.alternatePhone = alternatePhone.trim();
+    if (gender !== undefined) user.gender = gender.trim();
+    if (addressType !== undefined) user.addressType = addressType.trim();
 
     await user.save();
 
