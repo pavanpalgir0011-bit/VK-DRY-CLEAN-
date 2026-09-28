@@ -147,7 +147,7 @@ const sendNewOrderNotification = async (order) => {
 
           <!-- Action Button -->
           <div style="text-align: center; margin-bottom: 12px;">
-            <a href="http://localhost:5173/admin/orders/${order.orderId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">
+            <a href="${process.env.CLIENT_URL || 'https://server-production-2c98.up.railway.app'}/admin/orders/${order.orderId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 15px;">
               Open Order in Admin Panel &rarr;
             </a>
           </div>
