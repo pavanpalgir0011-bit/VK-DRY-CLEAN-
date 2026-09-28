@@ -1,0 +1,15 @@
+{
+  "name": "vk-dry-clean",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "dev": "node -e \"const { spawn } = require('child_process'); spawn('npm', ['start'], { cwd: './server', stdio: 'inherit' }); spawn('npm', ['run', 'dev'], { cwd: './client', stdio: 'inherit' });\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

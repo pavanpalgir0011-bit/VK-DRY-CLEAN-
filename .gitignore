@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables (Keep Secrets Private)
+.env
+.env.*
+!.env.example
+client/.env
+server/.env
+
+# Build outputs and database data
+dist/
+build/
+client/dist/
+server/data/
+data/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
