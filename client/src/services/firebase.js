@@ -10,12 +10,12 @@ import {
 } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyB30D8ONcxWZSWseDbnBGvhIUZeIRSjvgY',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'vkdryclean-bdc28.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'vkdryclean-bdc28',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'vkdryclean-bdc28.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '716068283161',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:716068283161:web:8854dc710de93005269b88',
 };
 
 export const isFirebaseConfigured = Boolean(
