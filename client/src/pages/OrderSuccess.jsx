@@ -72,7 +72,7 @@ const OrderSuccess = () => {
 
           <h1 style={{ fontSize: '2.4rem', marginBottom: '0.5rem' }}>Order Placed Successfully 🎉</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '2rem' }}>
-            Thank you for booking with VK Dry Clean! Your clothes are in good hands.
+            Thank you for booking with Wash & Wow! Your clothes are in good hands.
           </p>
 
           {/* Details Card */}

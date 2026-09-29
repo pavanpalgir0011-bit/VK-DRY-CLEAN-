@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const request = async (endpoint, options = {}) => {
-  const token = localStorage.getItem('vk_token');
+  const token = localStorage.getItem('wash_and_wow_token') || localStorage.getItem('vk_token');
   const headers = {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),

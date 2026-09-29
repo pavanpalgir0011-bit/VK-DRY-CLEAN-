@@ -248,7 +248,7 @@ const Checkout = () => {
                       type="tel"
                       name="phone"
                       className="form-input"
-                      placeholder="e.g. +91 98765 43210"
+                      placeholder="e.g. +91 90585 54448"
                       value={formData.phone}
                       onChange={handleChange}
                       required

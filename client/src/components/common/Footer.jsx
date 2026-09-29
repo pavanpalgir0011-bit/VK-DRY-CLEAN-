@@ -13,10 +13,10 @@ const Footer = () => {
               <div className="brand-icon" style={{ width: '32px', height: '32px' }}>
                 <Sparkles size={16} />
               </div>
-              <span>VK Dry Clean</span>
+              <span>Wash & Wow</span>
             </h3>
             <p className="footer-desc">
-              VK Dry Clean is your neighborhood's premier dry cleaning and laundry service. We combine Italian hydrocarbon cleaning technology with hand-finish craftsmanship to deliver pristine garments right to your doorstep.
+              <strong>From Dryclean to Laundry - We Care For Everything.</strong> Wash & Wow is Kasganj's trusted garment care destination, combining Italian hydrocarbon technology with hand-finish craftsmanship for pristine results.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#38bdf8', fontSize: '0.85rem' }}>
               <ShieldCheck size={18} />
@@ -24,26 +24,34 @@ const Footer = () => {
             </div>
           </div>
 
-
-
           {/* Contact & Hours */}
           <div>
             <h4 className="footer-title">Contact & Store</h4>
             <div className="footer-contact-item">
               <MapPin size={18} />
-              <span>104, VK House, Connaught Place, New Delhi — 110001</span>
+              <span>Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP 207123</span>
             </div>
             <div className="footer-contact-item">
               <Phone size={18} />
-              <span>+91 98765 43210 / +91 98112 34567</span>
+              <a href="tel:+919058554448" style={{ color: 'inherit' }}>+91 90585 54448</a>
             </div>
             <div className="footer-contact-item">
               <Mail size={18} />
-              <span>care@vkdryclean.com</span>
+              <a href="mailto:care@washandwow.com" style={{ color: 'inherit' }}>care@washandwow.com</a>
             </div>
             <div className="footer-contact-item">
               <Clock size={18} />
-              <span>Open 7 Days: 8:00 AM – 9:00 PM</span>
+              <span>Open 7 Days: 10:00 AM – 8:00 PM</span>
+            </div>
+            <div style={{ marginTop: '0.75rem' }}>
+              <a
+                href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '0.85rem', color: '#38bdf8', textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+              >
+                📍 Find us on Google Maps ↗
+              </a>
             </div>
           </div>
         </div>
@@ -51,7 +59,7 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="footer-bottom">
           <div>
-            © {new Date().getFullYear()} VK Dry Clean. All rights reserved. Crafted with care for pristine fabric.
+            © {new Date().getFullYear()} Wash & Wow. All rights reserved. Crafted with care for pristine fabric.
           </div>
           <div className="footer-bottom-links">
             <Link to="/privacy-policy">Privacy Policy</Link>

@@ -149,7 +149,7 @@ const Home = () => {
                   <Sparkles size={14} /> 20% OFF
                 </span>
                 <div className="app-banner-title">First Doorstep Booking</div>
-                <div className="app-banner-desc">Use code VKFIRST at collection for instant discount.</div>
+                <div className="app-banner-desc">Use code WOWFIRST at collection for instant discount.</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, fontSize: '0.85rem', marginTop: '1rem' }}>
                 <span>Book Pickup Now</span>
@@ -336,6 +336,47 @@ const Home = () => {
               </div>
               <h4 className="step-title" style={{ fontSize: '1.05rem' }}>Doorstep Delivery</h4>
               <p className="step-desc">Delivered fresh in protective garment covers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Wash & Wow Kasganj Store Details Banner */}
+      <section className="section-sm" style={{ backgroundColor: '#ffffff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
+          <div className="card" style={{ padding: '2rem', border: '1.5px solid rgba(37, 99, 235, 0.15)', background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)', boxShadow: 'var(--shadow-md)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+              <div>
+                <span className="section-tag" style={{ background: '#dbeafe', color: 'var(--primary)' }}>
+                  📍 Visit Our Store in Kasganj
+                </span>
+                <h3 style={{ fontSize: '1.4rem', marginTop: '0.4rem', marginBottom: '0.35rem' }}>
+                  WASH & WOW — Soron Gate Main Market
+                </h3>
+                <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                  Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123<br />
+                  <strong style={{ color: 'var(--text-main)' }}>Timings:</strong> 10:00 AM – 8:00 PM (All 7 Days) • <strong style={{ color: 'var(--text-main)' }}>Helpline:</strong> +91 90585 54448
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a
+                  href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                >
+                  <span>Open in Google Maps ↗</span>
+                </a>
+                <a
+                  href="tel:+919058554448"
+                  className="btn btn-outline"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                >
+                  <span>Call +91 90585 54448</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -16,12 +16,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyUser = async () => {
-      const storedToken = localStorage.getItem('vk_token');
+      const storedToken = localStorage.getItem('wash_and_wow_token') || localStorage.getItem('vk_token');
       if (storedToken) {
         try {
           const res = await authAPI.getMe();
           if (res.success && res.user) {
             setUser(res.user);
+            localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
             localStorage.setItem('vk_user', JSON.stringify(res.user));
           }
         } catch (err) {
@@ -41,6 +42,8 @@ export const AuthProvider = ({ children }) => {
       if (res.success && res.token) {
         setToken(res.token);
         setUser(res.user);
+        localStorage.setItem('wash_and_wow_token', res.token);
+        localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
         localStorage.setItem('vk_token', res.token);
         localStorage.setItem('vk_user', JSON.stringify(res.user));
         addToast(res.message || 'Login successful!', 'success');
@@ -58,9 +61,11 @@ export const AuthProvider = ({ children }) => {
       if (res.success && res.token) {
         setToken(res.token);
         setUser(res.user);
+        localStorage.setItem('wash_and_wow_token', res.token);
+        localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
         localStorage.setItem('vk_token', res.token);
         localStorage.setItem('vk_user', JSON.stringify(res.user));
-        addToast('Account created successfully! Welcome to VK Dry Clean.', 'success');
+        addToast('Account created successfully! Welcome to Wash & Wow.', 'success');
         return res.user;
       }
     } catch (err) {
@@ -91,6 +96,8 @@ export const AuthProvider = ({ children }) => {
       if (res.success && res.token) {
         setToken(res.token);
         setUser(res.user);
+        localStorage.setItem('wash_and_wow_token', res.token);
+        localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
         localStorage.setItem('vk_token', res.token);
         localStorage.setItem('vk_user', JSON.stringify(res.user));
         addToast(`Welcome, ${res.user.name}!`, 'success');
@@ -107,6 +114,7 @@ export const AuthProvider = ({ children }) => {
       const res = await authAPI.updateProfile(profileData);
       if (res.success && res.user) {
         setUser(res.user);
+        localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
         localStorage.setItem('vk_user', JSON.stringify(res.user));
         addToast('Profile updated successfully!', 'success');
         return res.user;
@@ -120,6 +128,8 @@ export const AuthProvider = ({ children }) => {
   const logout = (notify = true) => {
     setToken(null);
     setUser(null);
+    localStorage.removeItem('wash_and_wow_token');
+    localStorage.removeItem('wash_and_wow_user');
     localStorage.removeItem('vk_token');
     localStorage.removeItem('vk_user');
     if (notify) {

@@ -89,7 +89,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
     }
   };
 
-  const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace('VK-2026-', '') || '1001'}`;
+  const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace(/^(WW|VK)-2026-/, '') || '1001'}`;
   const invoiceDate = order.createdAt
     ? new Date(order.createdAt).toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -139,8 +139,8 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
           {/* Header Row */}
           <div className="invoice-header">
             <div>
-              <div className="invoice-brand-title">VK DRY CLEAN</div>
-              <div className="invoice-brand-tagline">Premium Fabric Care & Laundry Solutions</div>
+              <div className="invoice-brand-title">WASH & WOW</div>
+              <div className="invoice-brand-tagline">From Dryclean to Laundry - We Care For Everything</div>
               <div className="invoice-store-address">
                 {storeSettings?.storeAddress ? (
                   <>
@@ -149,11 +149,11 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
                   </>
                 ) : (
                   <>
-                    <span>Doorstep Pickup & Delivery Service</span>
+                    <span>Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP 207123</span>
                     <br />
                   </>
                 )}
-                Helpline: {storeSettings?.storePhone || '+91 98765 43210'} | Email: {storeSettings?.storeEmail || 'support@vkdryclean.com'}
+                Helpline: {storeSettings?.storePhone || '+91 90585 54448'} | Email: {storeSettings?.storeEmail || 'care@washandwow.com'}
                 {storeSettings?.gstNumber ? (
                   <>
                     <br />
@@ -256,9 +256,9 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
               </div>
               <div style={{ marginTop: '1.25rem', fontSize: '0.78rem', color: '#64748b' }}>
                 <strong>Bank / UPI Details:</strong><br />
-                A/C Name: VK DRY CLEAN SERVICES<br />
-                Bank: HDFC Bank, Connaught Place Branch<br />
-                UPI ID: vkdryclean@hdfcbank
+                A/C Name: WASH & WOW SERVICES<br />
+                Bank: HDFC Bank / SBI, Kasganj Branch<br />
+                UPI ID: washandwow@upi
               </div>
             </div>
 
@@ -307,7 +307,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
               </div>
               <ol style={{ margin: 0, paddingLeft: '1rem', fontSize: '0.74rem', color: '#64748b', lineHeight: 1.4 }}>
                 <li>Please verify garments and count at the time of delivery.</li>
-                <li>VK Dry Clean is not liable for color bleed due to manufacturer defect.</li>
+                <li>Wash & Wow is not liable for color bleed due to manufacturer defect.</li>
                 <li>Any discrepancies must be reported within 24 hours of delivery.</li>
                 <li>This is a computer generated invoice and requires no physical seal.</li>
               </ol>
@@ -316,11 +316,11 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
             <div style={{ textAlign: 'center', minWidth: '180px' }}>
               <div style={{ height: '50px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                 <span style={{ fontFamily: 'cursive', fontSize: '1.2rem', color: 'var(--primary)', opacity: 0.8 }}>
-                  VK Dry Clean
+                  Wash & Wow
                 </span>
               </div>
               <div style={{ borderTop: '1px solid #cbd5e1', paddingTop: '0.35rem', fontSize: '0.78rem', fontWeight: 700, color: '#0f172a' }}>
-                For VK DRY CLEAN
+                For WASH & WOW
               </div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Authorized Signatory</div>
             </div>

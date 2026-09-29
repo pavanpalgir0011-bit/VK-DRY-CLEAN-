@@ -69,7 +69,7 @@ const AdminLogin = () => {
           </div>
           <h1 style={{ fontSize: '1.8rem', marginBottom: '0.35rem' }}>Admin Portal</h1>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-            Authorized Administrator Access for <strong>VK Dry Clean</strong>
+            Authorized Administrator Access for <strong>Wash & Wow</strong>
           </p>
         </div>
 

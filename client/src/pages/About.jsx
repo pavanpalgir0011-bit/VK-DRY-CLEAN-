@@ -13,7 +13,7 @@ const About = () => {
             Elevating the Art of <span style={{ color: 'var(--primary)' }}>Garment Care</span>
           </h1>
           <p style={{ fontSize: '1.15rem', lineHeight: 1.7, color: 'var(--text-muted)' }}>
-            VK Dry Clean was founded on a simple yet unyielding philosophy: every piece of clothing tells a story, and delicate fabrics deserve obsessive care, world-class European solvent technology, and effortless doorstep convenience.
+            Wash & Wow was founded on a simple yet unyielding philosophy: <em>"From Dryclean to Laundry - We Care For Everything."</em> Every piece of clothing tells a story, and delicate fabrics deserve obsessive care, closed-loop Italian solvent technology, and effortless doorstep convenience.
           </p>
         </div>
       </section>
@@ -24,12 +24,12 @@ const About = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'center' }}>
             <div>
               <span className="section-tag">Our Heritage</span>
-              <h2 style={{ fontSize: '2.2rem', marginBottom: '1.25rem' }}>From a Local Workshop to Delhi NCR's Trusted Cleaners</h2>
+              <h2 style={{ fontSize: '2.2rem', marginBottom: '1.25rem' }}>Kasganj's Trusted Dry Cleaning & Fabric Care Workshop</h2>
               <p style={{ marginBottom: '1rem', lineHeight: 1.7 }}>
-                Started over a decade ago as a neighborhood laundry and pressing workshop, VK Dry Clean has grown into one of the region’s premier automated fabric care providers.
+                Located at Soron Gate Main Market Road, Kasganj, Wash & Wow has established itself as the region's benchmark for automated, premium garment care.
               </p>
               <p style={{ marginBottom: '1.5rem', lineHeight: 1.7 }}>
-                Traditional dry cleaners rely on toxic PERC chemicals that degrade fibers and leave harsh synthetic odors. At VK Dry Clean, we transitioned 100% of our dry cleaning operations to closed-loop Italian hydrocarbon and soft-water washing technology. The result? Vivid colors, soft textures, and zero chemical smell.
+                Traditional dry cleaners rely on toxic PERC chemicals that degrade fibers and leave harsh synthetic odors. At Wash & Wow, we transitioned 100% of our dry cleaning operations to closed-loop Italian hydrocarbon and soft-water washing technology. The result? Vivid colors, soft textures, and zero chemical smell.
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '2rem' }}>
@@ -52,7 +52,7 @@ const About = () => {
             <div>
               <img
                 src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800&auto=format&fit=crop&q=80"
-                alt="VK Dry Clean Precision Steam Finish"
+                alt="Wash & Wow Precision Steam Finish"
                 style={{ width: '100%', height: '420px', objectFit: 'cover', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)' }}
               />
             </div>
@@ -109,7 +109,7 @@ const About = () => {
       <section className="section-sm">
         <div className="container">
           <div className="cta-banner">
-            <h2>Experience the VK Dry Clean Standard</h2>
+            <h2>Experience the Wash & Wow Standard</h2>
             <p>Join thousands of professionals and families who trust us with their everyday and high-fashion wardrobe.</p>
             <Link to="/services" className="btn btn-white btn-lg">
               <span>Explore Services & Book Pickup</span>

@@ -46,7 +46,7 @@ const AdminDashboard = () => {
     <AdminLayout title="Operational Dashboard">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '1.8rem', marginBottom: '0.2rem' }}>Welcome to VK Dry Clean Operations</h1>
+          <h1 style={{ fontSize: '1.8rem', marginBottom: '0.2rem' }}>Welcome to Wash & Wow Operations</h1>
           <p style={{ margin: 0, fontSize: '0.92rem' }}>Real-time metrics, pickup scheduling, and processing statuses.</p>
         </div>
 

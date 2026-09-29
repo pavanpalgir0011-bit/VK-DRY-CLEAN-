@@ -64,7 +64,7 @@ const sendNewOrderNotification = async (order) => {
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
         <!-- Top banner -->
         <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; padding: 24px; text-align: center;">
-          <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">VK DRY CLEAN</h1>
+          <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">WASH & WOW</h1>
           <p style="margin: 6px 0 0 0; font-size: 14px; opacity: 0.9;">New Doorstep Order Notification</p>
         </div>
 
@@ -163,14 +163,14 @@ const sendNewOrderNotification = async (order) => {
 
         <!-- Footer -->
         <div style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-          VK Dry Clean Automated Order Notification System<br />
+          Wash & Wow Automated Order Notification System<br />
           Helpline: +91 98765 43210 • Delhi, India
         </div>
       </div>
     `;
 
     const mailOptions = {
-      from: `"VK Dry Clean Order Desk" <${process.env.EMAIL_USER || adminEmail}>`,
+      from: `"Wash & Wow Order Desk" <${process.env.EMAIL_USER || adminEmail}>`,
       to: adminEmail,
       subject: `🚨 New Order: #${order.orderId} - ₹${order.total} (${order.customer?.name || 'Customer'})`,
       text: `New order #${order.orderId} received from ${order.customer?.name} (${order.customer?.phone}). Total: ₹${order.total}. Pickup Date: ${order.pickupDate} (${order.pickupTime}). Address: ${order.pickupAddress?.address}, ${order.pickupAddress?.city}.`,
@@ -205,7 +205,7 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
       return { success: false, message: 'SMTP not configured' };
     }
 
-    const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace('VK-2026-', '') || '1001'}`;
+    const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace('WW-2026-', '') || '1001'}`;
     const invoiceDate = new Date(order.updatedAt || order.createdAt || Date.now()).toLocaleDateString('en-IN', {
       day: '2-digit',
       month: 'short',
@@ -214,7 +214,7 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
 
     const storeAddress = storeSettings?.storeAddress || 'Doorstep Pickup & Delivery Service across the City';
     const storePhone = storeSettings?.storePhone || '+91 98765 43210';
-    const storeEmail = storeSettings?.storeEmail || process.env.EMAIL_USER || 'support@vkdryclean.com';
+    const storeEmail = storeSettings?.storeEmail || process.env.EMAIL_USER || 'care@washandwow.com';
     const gstNumber = storeSettings?.gstNumber || '';
 
     const itemsRows = (order.items || [])
@@ -235,7 +235,7 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
         <!-- Top Banner -->
         <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; padding: 26px 24px; text-align: center;">
-          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">VK DRY CLEAN</h1>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">WASH & WOW</h1>
           <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.95; letter-spacing: 0.3px;">Premium Fabric Care & Laundry Solutions</p>
         </div>
 
@@ -245,7 +245,7 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
             <div style="font-size: 20px;">✅</div>
             <div>
               <div style="font-size: 14px; font-weight: 700; color: #166534;">Your Order has been Delivered!</div>
-              <div style="font-size: 12px; color: #15803d;">Thank you for choosing VK Dry Clean. Please find your official Tax Invoice attached below.</div>
+              <div style="font-size: 12px; color: #15803d;">Thank you for choosing Wash & Wow. Please find your official Tax Invoice attached below.</div>
             </div>
           </div>
 
@@ -253,7 +253,7 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
           <table style="width: 100%; border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 20px;">
             <tr>
               <td style="vertical-align: top; width: 60%;">
-                <div style="font-size: 14px; font-weight: 800; color: #1e3a8a;">VK DRY CLEAN</div>
+                <div style="font-size: 14px; font-weight: 800; color: #1e3a8a;">WASH & WOW</div>
                 <div style="font-size: 12px; color: #475569; margin-top: 3px; line-height: 1.4;">
                   ${storeAddress}<br />
                   Helpline: <strong>${storePhone}</strong><br />
@@ -338,17 +338,17 @@ const sendCustomerInvoiceEmail = async (order, storeSettings = {}) => {
 
         <!-- Footer -->
         <div style="background-color: #f8fafc; padding: 16px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-          VK Dry Clean • Quality You Can Wear<br />
+          Wash & Wow • Quality You Can Wear<br />
           Helpline: ${storePhone} • Email: ${storeEmail}
         </div>
       </div>
     `;
 
     const mailOptions = {
-      from: `"VK Dry Clean" <${process.env.EMAIL_USER || storeEmail}>`,
+      from: `"Wash & Wow" <${process.env.EMAIL_USER || storeEmail}>`,
       to: customerEmail,
-      subject: `🧾 Tax Invoice #${invoiceNum} for Order #${order.orderId} - Delivered | VK Dry Clean`,
-      text: `Dear ${order.customer?.name},\n\nYour order #${order.orderId} has been successfully completed and delivered! Total Amount Paid: ₹${order.total}.\n\nInvoice Number: ${invoiceNum}\nDate: ${invoiceDate}\nStore Helpline: ${storePhone}\n\nThank you for choosing VK Dry Clean!`,
+      subject: `🧾 Tax Invoice #${invoiceNum} for Order #${order.orderId} - Delivered | Wash & Wow`,
+      text: `Dear ${order.customer?.name},\n\nYour order #${order.orderId} has been successfully completed and delivered! Total Amount Paid: ₹${order.total}.\n\nInvoice Number: ${invoiceNum}\nDate: ${invoiceDate}\nStore Helpline: ${storePhone}\n\nThank you for choosing Wash & Wow!`,
       html: htmlContent,
     };
 
@@ -379,7 +379,7 @@ const sendCustomerOrderConfirmationEmail = async (order, storeSettings = {}) => 
     }
 
     const storePhone = storeSettings?.storePhone || '+91 98765 43210';
-    const storeEmail = storeSettings?.storeEmail || process.env.EMAIL_USER || 'support@vkdryclean.com';
+    const storeEmail = storeSettings?.storeEmail || process.env.EMAIL_USER || 'care@washandwow.com';
 
     const itemsRows = (order.items || [])
       .map(
@@ -398,7 +398,7 @@ const sendCustomerOrderConfirmationEmail = async (order, storeSettings = {}) => 
     const htmlContent = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
         <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; padding: 26px 24px; text-align: center;">
-          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">VK DRY CLEAN</h1>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px;">WASH & WOW</h1>
           <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.95;">Doorstep Pickup Confirmed 🎉</p>
         </div>
 
@@ -463,24 +463,24 @@ const sendCustomerOrderConfirmationEmail = async (order, storeSettings = {}) => 
           </div>
 
           <div style="text-align: center; margin-bottom: 16px;">
-            <a href="${process.env.CLIENT_URL || 'https://vkdryclean.up.railway.app'}/orders/${order.orderId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px;">
+            <a href="${process.env.CLIENT_URL || 'https://washandwow.up.railway.app'}/orders/${order.orderId}" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px;">
               Track Order Live &rarr;
             </a>
           </div>
         </div>
 
         <div style="background-color: #f8fafc; padding: 16px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-          VK Dry Clean • Quality You Can Wear<br />
+          Wash & Wow • Quality You Can Wear<br />
           Helpline: ${storePhone} • Email: ${storeEmail}
         </div>
       </div>
     `;
 
     const mailOptions = {
-      from: `"VK Dry Clean" <${process.env.EMAIL_USER || storeEmail}>`,
+      from: `"Wash & Wow" <${process.env.EMAIL_USER || storeEmail}>`,
       to: customerEmail,
-      subject: `🧺 Order Confirmation #${order.orderId} - Scheduled for ${order.pickupDate} | VK Dry Clean`,
-      text: `Dear ${order.customer?.name},\n\nYour order #${order.orderId} has been placed successfully!\nPickup Date: ${order.pickupDate} (${order.pickupTime})\nTotal: ₹${order.total}.\n\nThank you for choosing VK Dry Clean!`,
+      subject: `🧺 Order Confirmation #${order.orderId} - Scheduled for ${order.pickupDate} | Wash & Wow`,
+      text: `Dear ${order.customer?.name},\n\nYour order #${order.orderId} has been placed successfully!\nPickup Date: ${order.pickupDate} (${order.pickupTime})\nTotal: ₹${order.total}.\n\nThank you for choosing Wash & Wow!`,
       html: htmlContent,
     };
 

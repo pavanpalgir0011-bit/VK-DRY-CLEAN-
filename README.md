@@ -1,6 +1,7 @@
-# VK Dry Clean — Professional Dry Cleaning & Laundry Service Platform
+# Wash & Wow — Professional Dry Cleaning & Laundry Service Platform
 
-A modern, responsive, end-to-end full-stack web application built for **VK Dry Clean**, featuring a customer booking website and a comprehensive **Admin Operations Panel**.
+A modern, responsive, end-to-end full-stack web application built for **Wash & Wow** (*Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP*), featuring a customer booking website and a comprehensive **Admin Operations Panel**.
+**Motto:** *"From Dryclean to Laundry - We Care For Everything"*
 
 ---
 

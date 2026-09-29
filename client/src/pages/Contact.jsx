@@ -70,9 +70,9 @@ const Contact = () => {
       <div className="container">
         <div className="section-header">
           <span className="section-tag">Direct Support</span>
-          <h1 className="section-title">Get in Touch with VK Dry Clean</h1>
+          <h1 className="section-title">Get in Touch with Wash & Wow</h1>
           <p className="section-desc">
-            Have questions about specialized fabrics, bulk commercial laundry, or delivery times? We're always here to assist.
+            From Dryclean to Laundry - We Care For Everything. Have questions about specialized fabrics, pickup times, or bulk orders? We're here for you.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ const Contact = () => {
           {/* Contact Details Card */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem' }}>Contact Information</h3>
+              <h3 style={{ fontSize: '1.3rem', marginBottom: '1.5rem' }}>Store Information</h3>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
@@ -88,10 +88,18 @@ const Contact = () => {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Main Plant & Store</h5>
-                    <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      {storeInfo.address || 'Doorstep Pickup & Delivery Service across the City'}
+                    <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Main Workshop & Store</h5>
+                    <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.5 }}>
+                      {storeInfo.address || 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123'}
                     </p>
+                    <a
+                      href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.4rem', fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}
+                    >
+                      📍 View on Google Maps ↗
+                    </a>
                   </div>
                 </div>
 
@@ -102,7 +110,9 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Phone & WhatsApp</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      {storeInfo.phone || '+91 98765 43210'}
+                      <a href="tel:+919058554448" style={{ color: 'inherit', fontWeight: 600 }}>
+                        {storeInfo.phone || '+91 90585 54448'}
+                      </a>
                     </p>
                   </div>
                 </div>
@@ -114,7 +124,9 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Customer Email</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      {storeInfo.email || 'support@vkdryclean.com'}
+                      <a href="mailto:care@washandwow.com" style={{ color: 'inherit' }}>
+                        {storeInfo.email || 'care@washandwow.com'}
+                      </a>
                     </p>
                   </div>
                 </div>
@@ -126,24 +138,34 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Working Hours</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      Monday – Sunday: 8:00 AM – 9:00 PM (All 7 Days)
+                      Monday – Sunday: 10:00 AM – 8:00 PM (All 7 Days)
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Quick Note Card */}
+            {/* Quick Note Card with Maps Directions */}
             <div className="card" style={{ padding: '1.5rem', background: 'var(--primary-light)', borderColor: 'rgba(37, 99, 235, 0.2)' }}>
               <h4 style={{ color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '1.05rem' }}>
-                Need Immediate Doorstep Pickup?
+                Visit Our Kasganj Store
               </h4>
               <p style={{ color: 'var(--text-main)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                You can select your garments and book a collection online right now with real-time status tracking.
+                Drop off your garments in person at Soron Gate Main Market Rd or schedule a convenient doorstep pickup online.
               </p>
-              <a href="/services" className="btn btn-primary btn-sm">
-                Book Service Online
-              </a>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a
+                  href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary btn-sm"
+                >
+                  Get Directions ↗
+                </a>
+                <a href="/services" className="btn btn-outline btn-sm">
+                  Book Pickup Online
+                </a>
+              </div>
             </div>
           </div>
 
@@ -195,7 +217,7 @@ const Contact = () => {
                     type="tel"
                     name="phone"
                     className="form-input"
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 90585 54448"
                     value={formData.phone}
                     onChange={handleChange}
                   />

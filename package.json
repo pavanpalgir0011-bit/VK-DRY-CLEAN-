@@ -1,7 +1,7 @@
 {
-  "name": "vk-dry-clean",
+  "name": "wash-and-wow",
   "version": "1.0.0",
-  "description": "VK Dry Clean - Complete Full-Stack Web Application",
+  "description": "Wash & Wow - Complete Full-Stack Web Application",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
@@ -25,6 +25,6 @@
     "pg": "^8.23.0"
   },
   "keywords": [],
-  "author": "VK Dry Clean",
+  "author": "Wash & Wow",
   "license": "ISC"
 }

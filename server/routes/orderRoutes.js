@@ -11,7 +11,7 @@ const {
 } = require('../utils/emailService');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 
-// Generate unique readable order ID e.g. VK-2026-8492
+// Generate unique readable order ID e.g. WW-2026-8492
 const generateOrderId = () => {
   const random = Math.floor(1000 + Math.random() * 9000);
   return `VK-2026-${random}`;
@@ -260,7 +260,7 @@ router.get('/:id', requireAuth, async (req, res) => {
     const id = req.params.id;
     let order = null;
 
-    if (id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -334,7 +334,7 @@ router.get('/admin/orders/:id', requireAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -379,7 +379,7 @@ router.put('/admin/orders/:id/status', requireAdmin, async (req, res) => {
 
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -451,7 +451,7 @@ router.post('/admin/orders/:id/send-invoice', requireAdmin, async (req, res) => 
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -487,7 +487,7 @@ router.post('/:id/email-invoice', requireAuth, async (req, res) => {
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);

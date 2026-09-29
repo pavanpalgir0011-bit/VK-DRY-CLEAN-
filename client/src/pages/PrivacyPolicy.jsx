@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', lineHeight: 1.7, color: 'var(--text-main)', fontSize: '0.98rem' }}>
             <p>
-              At <strong>VK Dry Clean</strong>, your privacy and data security are paramount. This Privacy Policy details how we collect, handle, and protect your personal information when you use our website, place laundry bookings, and utilize our doorstep pickup and delivery services.
+              At <strong>Wash & Wow</strong>, your privacy and data security are paramount. This Privacy Policy details how we collect, handle, and protect your personal information when you use our website, place laundry bookings, and utilize our doorstep pickup and delivery services.
             </p>
 
             <h3 style={{ fontSize: '1.25rem' }}>1. Information We Collect</h3>
@@ -54,7 +54,7 @@ const PrivacyPolicy = () => {
 
             <h3 style={{ fontSize: '1.25rem' }}>3. Data Protection & Sharing</h3>
             <p>
-              VK Dry Clean never sells, rents, or monetizes your personal information to third-party advertisers. Data is shared exclusively with our internal operations team and delivery riders for fulfillment purposes only.
+              Wash & Wow never sells, rents, or monetizes your personal information to third-party advertisers. Data is shared exclusively with our internal operations team and delivery riders for fulfillment purposes only.
             </p>
 
             <h3 style={{ fontSize: '1.25rem' }}>4. Security</h3>
@@ -66,9 +66,9 @@ const PrivacyPolicy = () => {
             <p>
               If you have any questions or wish to delete your account data, please contact our Data Protection Officer at:
               <br />
-              <strong>Email:</strong> support@vkdryclean.com
+              <strong>Email:</strong> care@washandwow.com
               <br />
-              <strong>Customer Support Desk:</strong> VK Dry Clean Operations
+              <strong>Customer Support Desk:</strong> Wash & Wow Operations, Soron Gate Main Market Rd, Kasganj, UP 207123
             </p>
           </div>
         </div>

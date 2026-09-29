@@ -476,7 +476,7 @@ const Profile = () => {
                         name="phone"
                         className="form-input"
                         style={{ paddingLeft: '38px', height: '44px', fontSize: '15px' }}
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 90585 54448"
                         value={formData.phone}
                         onChange={handleChange}
                         required
@@ -823,7 +823,7 @@ const Profile = () => {
                 </div>
 
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  Need urgent garment pickup or modification? Call store customer care at <strong>+91 98765 43210</strong>.
+                  Need urgent garment pickup or modification? Call store customer care at <strong>+91 90585 54448</strong>.
                 </div>
               </div>
             )}

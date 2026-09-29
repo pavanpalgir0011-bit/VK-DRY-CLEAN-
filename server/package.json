@@ -1,7 +1,7 @@
 {
-  "name": "vk-dry-clean-server",
+  "name": "wash-and-wow-server",
   "version": "1.0.0",
-  "description": "Backend API for VK Dry Clean",
+  "description": "Backend API for Wash & Wow",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

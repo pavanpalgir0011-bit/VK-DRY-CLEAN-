@@ -63,6 +63,12 @@ export const STATE_CITIES_MAP = {
     'Bahadurgarh',
   ],
   'Uttar Pradesh': [
+    'Kasganj',
+    'Aligarh',
+    'Etah',
+    'Hathras',
+    'Agra',
+    'Mathura',
     'Noida',
     'Greater Noida',
     'Ghaziabad',
