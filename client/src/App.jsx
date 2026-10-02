@@ -195,7 +195,7 @@ function App() {
                     <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>404</h1>
                     <p style={{ marginBottom: '2rem' }}>The page you are looking for does not exist.</p>
                     <a href="/" className="btn btn-primary">
-                      Return to Wash & Wow Home
+                      Return to JKM Dry Clean Home
                     </a>
                   </div>
                 }

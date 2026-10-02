@@ -79,7 +79,7 @@ const orderSchema = new mongoose.Schema(
     },
     gstRate: {
       type: Number,
-      default: 5,
+      default: 0,
     },
     gstAmount: {
       type: Number,

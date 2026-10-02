@@ -172,7 +172,7 @@ const OrderTracking = () => {
             <div style={{ marginTop: '2rem', padding: '1rem', background: 'var(--bg-card-subtle)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <HelpCircle size={20} color="var(--primary)" />
               <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                Have questions regarding your order? Reach our customer helpline at <strong>+91 90585 54448</strong>.
+                Have questions regarding your order? Reach our customer helpline at <strong>+91 85868 25438</strong>.
               </div>
             </div>
           </div>

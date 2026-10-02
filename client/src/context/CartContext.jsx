@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
   const [settings, setSettings] = useState({
     deliveryFee: 50,
     freeDeliveryThreshold: 499,
-    gstRate: 5,
+    gstRate: 0,
   });
 
   const { addToast } = useToast();
@@ -31,7 +31,7 @@ export const CartProvider = ({ children }) => {
           setSettings({
             deliveryFee: Number(res.settings.deliveryFee ?? 50),
             freeDeliveryThreshold: Number(res.settings.freeDeliveryThreshold ?? 499),
-            gstRate: Number(res.settings.gstRate ?? 5),
+            gstRate: Number(res.settings.gstRate ?? 0),
           });
         }
       } catch (err) {
@@ -103,7 +103,7 @@ export const CartProvider = ({ children }) => {
   // Calculations based on dynamic settings
   const standardDeliveryFee = Number(settings.deliveryFee ?? 50);
   const freeDeliveryThreshold = Number(settings.freeDeliveryThreshold ?? 499);
-  const gstRate = Number(settings.gstRate ?? 5);
+  const gstRate = Number(settings.gstRate ?? 0);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const deliveryFee =

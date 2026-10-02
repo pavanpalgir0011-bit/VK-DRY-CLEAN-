@@ -26,7 +26,7 @@ const Navbar = () => {
             <div className="brand-icon">
               <Sparkles size={20} />
             </div>
-            <span>Wash & Wow</span>
+            <span>JKM Dry Clean</span>
           </Link>
 
           {/* Desktop Navigation Links */}

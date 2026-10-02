@@ -69,7 +69,7 @@ const AdminLogin = () => {
           </div>
           <h1 style={{ fontSize: '1.8rem', marginBottom: '0.35rem' }}>Admin Portal</h1>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-            Authorized Administrator Access for <strong>Wash & Wow</strong>
+            Authorized Administrator Access for <strong>JKM Dry Clean</strong>
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const AdminLogin = () => {
                 type="email"
                 className="form-input"
                 style={{ paddingLeft: '42px' }}
-                placeholder={import.meta.env.VITE_ADMIN_EMAIL || 'admin@vkdryclean.com'}
+                placeholder={import.meta.env.VITE_ADMIN_EMAIL || 'jkmdryclean68@gmail.com'}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

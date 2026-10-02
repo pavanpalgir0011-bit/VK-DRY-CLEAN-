@@ -1,6 +1,6 @@
-# Wash & Wow — Professional Dry Cleaning & Laundry Service Platform
+# JKM Dry Clean — Professional Dry Cleaning & Laundry Service Platform
 
-A modern, responsive, end-to-end full-stack web application built for **Wash & Wow** (*Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP*), featuring a customer booking website and a comprehensive **Admin Operations Panel**.
+A modern, responsive, end-to-end full-stack web application built for **JKM Dry Clean** (*Noida Sec 68, Garhi Chaukhandi, UP 201301*), featuring a customer booking website and a comprehensive **Admin Operations Panel**.
 **Motto:** *"From Dryclean to Laundry - We Care For Everything"*
 
 ---
@@ -9,11 +9,11 @@ A modern, responsive, end-to-end full-stack web application built for **Wash & W
 
 ### 👔 Customer Website
 * **Homepage (`/`)**: Hero section, service highlights, How It Works (5-stage guide), Why Choose Us, trust metrics, and responsive navigation with mobile drawer.
-* **Services Catalog (`/services`)**: Filter by category (*Dry Cleaning, Wash & Fold, Steam Iron, Premium Care, Household, Footwear*), search bar, live price cards, turnaround times, and direct Add-to-Cart.
+* **Services Catalog (`/services`)**: Filter by category (*Garments, Home Care, Shoe Care, Bag Care, Laundry, Others*), search bar, live price cards, turnaround times, and direct Add-to-Cart.
 * **Service Details (`/services/:id`)**: Rich garment care descriptions, interactive quantity counter `[-] qty [+]`, and instant cart addition.
 * **Shopping Cart (`/cart`)**: Real-time quantity adjustment, item removal, dynamic Free Pickup progress bar (Unlocked on orders ₹499+), subtotal, delivery fee calculation, and guest login guard.
-* **Doorstep Checkout (`/checkout`)**: Customer contact information, address & nearby landmark, scheduled pickup date & time slot picker, order summary, and Cash on Delivery payment support (ready for Razorpay).
-* **Order Success (`/order-success/:orderId`)**: Celebratory confetti animation, unique Order ID generation (`VK-2026-XXXX`), order summary, and direct links to live tracking.
+* **Doorstep Checkout (`/checkout`)**: Customer contact information, address & nearby landmark, scheduled pickup date & time slot picker, order summary, and Cash on Delivery payment support.
+* **Order Success (`/order-success/:orderId`)**: Celebratory confetti animation, unique Order ID generation (`JKM-2026-XXXX`), order summary, and direct links to live tracking.
 * **My Orders (`/orders`)**: Filter orders by *All, Active, Completed, Cancelled* with live status badges.
 * **Order Tracking (`/orders/:id`)**: Visual **10-stage live progress timeline**:
   1. *Order Placed*

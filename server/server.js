@@ -43,7 +43,7 @@ app.use(authenticate);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    service: 'Wash & Wow Backend API',
+    service: 'JKM Dry Clean Backend API',
     timestamp: new Date().toISOString(),
   });
 });
@@ -90,7 +90,7 @@ const startServer = async () => {
     await seedInitialData();
 
     const serverInstance = app.listen(PORT, () => {
-      console.log(`🚀 Wash & Wow Server running on http://localhost:${PORT}`);
+      console.log(`🚀 JKM Dry Clean Server running on http://localhost:${PORT}`);
       console.log(`📡 REST API Base: http://localhost:${PORT}/api`);
     });
 

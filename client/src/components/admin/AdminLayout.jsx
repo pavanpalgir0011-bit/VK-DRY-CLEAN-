@@ -33,7 +33,7 @@ const AdminLayout = ({ children, title = 'Admin Dashboard' }) => {
           </div>
           <div>
             <div style={{ fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.02em', color: '#ffffff', fontFamily: 'var(--font-heading)' }}>
-              Wash & Wow
+              JKM Dry Clean
             </div>
             <div style={{ fontSize: '0.72rem', color: '#38bdf8', fontWeight: 600, textTransform: 'uppercase' }}>
               Admin Portal

@@ -50,11 +50,11 @@ CREATE TABLE IF NOT EXISTS public.settings (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     delivery_fee NUMERIC(10, 2) DEFAULT 50.00,
     free_delivery_threshold NUMERIC(10, 2) DEFAULT 499.00,
-    gst_rate NUMERIC(5, 2) DEFAULT 5.00,
-    gst_number VARCHAR(64) DEFAULT '07AAAAA0000A1Z5',
-    store_phone VARCHAR(64) DEFAULT '+91 90585 54448',
-    store_address TEXT DEFAULT 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123',
-    store_email VARCHAR(255) DEFAULT 'care@washandwow.com',
+    gst_rate NUMERIC(5, 2) DEFAULT 0.00,
+    gst_number VARCHAR(64) DEFAULT '',
+    store_phone VARCHAR(64) DEFAULT '+91 85868 25438',
+    store_address TEXT DEFAULT 'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301',
+    store_email VARCHAR(255) DEFAULT 'jkmdryclean68@gmail.com',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
 
 -- Insert Default Settings
 INSERT INTO public.settings (delivery_fee, free_delivery_threshold, gst_rate, gst_number, store_phone, store_address, store_email)
-VALUES (50.00, 499.00, 5.00, '07AAAAA0000A1Z5', '+91 90585 54448', 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123', 'care@washandwow.com')
+VALUES (50.00, 499.00, 0.00, '', '+91 85868 25438', 'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301', 'jkmdryclean68@gmail.com')
 ON CONFLICT DO NOTHING;
 
 -- Insert Production Admin (pavanpalgir0011@gmail.com)
@@ -111,10 +111,10 @@ VALUES (
     'Pavan Pal',
     'pavanpalgir0011@gmail.com',
     'admin',
-    '+91 90585 54448',
-    'Kasganj',
-    'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh',
-    '207123'
+    '+91 85868 25438',
+    'Noida',
+    'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301',
+    '201301'
 )
 ON CONFLICT (email) DO UPDATE SET role = 'admin';
 

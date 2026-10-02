@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('wash_and_wow_user', JSON.stringify(res.user));
         localStorage.setItem('vk_token', res.token);
         localStorage.setItem('vk_user', JSON.stringify(res.user));
-        addToast('Account created successfully! Welcome to Wash & Wow.', 'success');
+        addToast('Account created successfully! Welcome to JKM Dry Clean.', 'success');
         return res.user;
       }
     } catch (err) {

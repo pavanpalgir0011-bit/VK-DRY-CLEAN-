@@ -20,15 +20,15 @@ import Modal from '../../components/common/Modal';
 import { useToast } from '../../context/ToastContext';
 
 const CATEGORIES = [
-  'Dry Cleaning',
-  'Wash & Fold',
-  'Steam Iron',
-  'Premium Care',
-  'Household',
-  'Footwear',
+  'Garments',
+  'Home Care',
+  'Shoe Care',
+  'Bag Care',
+  'Laundry',
+  'Others',
 ];
 
-const UNITS = ['Piece', 'Set', 'Pair', 'Kg', 'Sq Ft'];
+const UNITS = ['Pc', 'Set', 'Pair', 'Panel', 'Kg', 'Sq.ft', 'Piece'];
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
@@ -42,9 +42,9 @@ const AdminServices = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    category: 'Dry Cleaning',
+    category: 'Garments',
     price: '',
-    unit: 'Piece',
+    unit: 'Pc',
     image: '',
     turnaroundTime: '24-48 Hours',
     isActive: true,

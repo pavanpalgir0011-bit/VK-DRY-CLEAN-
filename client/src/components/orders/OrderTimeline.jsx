@@ -15,7 +15,7 @@ import {
 
 const ORDER_STAGES = [
   { key: 'Order Placed', title: 'Order Placed', desc: 'Your booking has been received.', icon: Clock },
-  { key: 'Order Accepted', title: 'Order Accepted', desc: 'Wash & Wow confirmed your booking.', icon: CheckCircle2 },
+  { key: 'Order Accepted', title: 'Order Accepted', desc: 'JKM Dry Clean confirmed your booking.', icon: CheckCircle2 },
   { key: 'Pickup Assigned', title: 'Pickup Assigned', desc: 'A dedicated rider is assigned for pickup.', icon: Truck },
   { key: 'Picked Up', title: 'Picked Up', desc: 'Garments collected from your doorstep.', icon: PackageCheck },
   { key: 'At Store', title: 'At Store', desc: 'Garments reached our primary processing hub.', icon: Building2 },

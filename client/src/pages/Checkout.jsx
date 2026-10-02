@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   Calendar, 
@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { ordersAPI, settingsAPI } from '../services/api';
 import { INDIAN_STATES } from '../data/indianStates';
 
@@ -248,7 +249,7 @@ const Checkout = () => {
                       type="tel"
                       name="phone"
                       className="form-input"
-                      placeholder="e.g. +91 90585 54448"
+                      placeholder="e.g. +91 85868 25438"
                       value={formData.phone}
                       onChange={handleChange}
                       required

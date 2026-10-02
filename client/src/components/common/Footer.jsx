@@ -13,10 +13,10 @@ const Footer = () => {
               <div className="brand-icon" style={{ width: '32px', height: '32px' }}>
                 <Sparkles size={16} />
               </div>
-              <span>Wash & Wow</span>
+              <span>JKM Dry Clean</span>
             </h3>
             <p className="footer-desc">
-              <strong>From Dryclean to Laundry - We Care For Everything.</strong> Wash & Wow is Kasganj's trusted garment care destination, combining Italian hydrocarbon technology with hand-finish craftsmanship for pristine results.
+              <strong>From Dryclean to Laundry - We Care For Everything.</strong> JKM Dry Clean is Noida Sec 68's trusted garment care destination, combining Italian hydrocarbon technology with hand-finish craftsmanship for pristine results.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#38bdf8', fontSize: '0.85rem' }}>
               <ShieldCheck size={18} />
@@ -29,15 +29,15 @@ const Footer = () => {
             <h4 className="footer-title">Contact & Store</h4>
             <div className="footer-contact-item">
               <MapPin size={18} />
-              <span>Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP 207123</span>
+              <span>Noida Sec 68, Garhi Chaukhandi, UP 201301</span>
             </div>
             <div className="footer-contact-item">
               <Phone size={18} />
-              <a href="tel:+919058554448" style={{ color: 'inherit' }}>+91 90585 54448</a>
+              <a href="tel:+918586825438" style={{ color: 'inherit' }}>+91 85868 25438</a>
             </div>
             <div className="footer-contact-item">
               <Mail size={18} />
-              <a href="mailto:care@washandwow.com" style={{ color: 'inherit' }}>care@washandwow.com</a>
+              <a href="mailto:jkmdryclean68@gmail.com" style={{ color: 'inherit' }}>jkmdryclean68@gmail.com</a>
             </div>
             <div className="footer-contact-item">
               <Clock size={18} />
@@ -45,7 +45,7 @@ const Footer = () => {
             </div>
             <div style={{ marginTop: '0.75rem' }}>
               <a
-                href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                href="https://www.google.com/maps/search/?api=1&query=Garhi+Chaukhandi+Sector+68+Noida+201301"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ fontSize: '0.85rem', color: '#38bdf8', textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
@@ -59,7 +59,7 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="footer-bottom">
           <div>
-            © {new Date().getFullYear()} Wash & Wow. All rights reserved. Crafted with care for pristine fabric.
+            © {new Date().getFullYear()} JKM Dry Clean. All rights reserved. Crafted with care for pristine fabric.
           </div>
           <div className="footer-bottom-links">
             <Link to="/privacy-policy">Privacy Policy</Link>

@@ -6,12 +6,6 @@ const Settings = require('../models/Settings');
 const getOrCreateSettings = async () => {
   let settings = await Settings.findOne();
   const defaultCities = [
-    { name: 'Kasganj', state: 'Uttar Pradesh', enabled: true },
-    { name: 'Aligarh', state: 'Uttar Pradesh', enabled: true },
-    { name: 'Etah', state: 'Uttar Pradesh', enabled: true },
-    { name: 'Hathras', state: 'Uttar Pradesh', enabled: true },
-    { name: 'Agra', state: 'Uttar Pradesh', enabled: true },
-    { name: 'Mathura', state: 'Uttar Pradesh', enabled: true },
     { name: 'Noida', state: 'Uttar Pradesh', enabled: true },
     { name: 'Greater Noida', state: 'Uttar Pradesh', enabled: true },
     { name: 'Ghaziabad', state: 'Uttar Pradesh', enabled: true },
@@ -19,6 +13,12 @@ const getOrCreateSettings = async () => {
     { name: 'South Delhi', state: 'Delhi', enabled: true },
     { name: 'Gurugram', state: 'Haryana', enabled: true },
     { name: 'Faridabad', state: 'Haryana', enabled: true },
+    { name: 'Kasganj', state: 'Uttar Pradesh', enabled: true },
+    { name: 'Aligarh', state: 'Uttar Pradesh', enabled: true },
+    { name: 'Etah', state: 'Uttar Pradesh', enabled: true },
+    { name: 'Hathras', state: 'Uttar Pradesh', enabled: true },
+    { name: 'Agra', state: 'Uttar Pradesh', enabled: true },
+    { name: 'Mathura', state: 'Uttar Pradesh', enabled: true },
     { name: 'Lucknow', state: 'Uttar Pradesh', enabled: false },
     { name: 'Kanpur', state: 'Uttar Pradesh', enabled: false },
     { name: 'Mumbai', state: 'Maharashtra', enabled: false },
@@ -29,26 +29,30 @@ const getOrCreateSettings = async () => {
     settings = new Settings({
       deliveryFee: 50,
       freeDeliveryThreshold: 499,
-      gstRate: 5,
-      gstNumber: '07AAAAA0000A1Z5',
-      storePhone: '+91 90585 54448',
-      storeAddress: 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123',
-      storeEmail: 'care@washandwow.com',
+      gstRate: 0,
+      gstNumber: '',
+      storePhone: '+91 85868 25438',
+      storeAddress: 'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301',
+      storeEmail: 'jkmdryclean68@gmail.com',
       serviceableCities: defaultCities,
     });
     await settings.save();
   } else {
-    // Ensure store details stay up to date if previously empty
-    if (!settings.storePhone || settings.storePhone === '0000000000') {
-      settings.storePhone = '+91 90585 54448';
+    // Ensure store details stay up to date with JKM Dry Clean
+    if (!settings.storePhone || settings.storePhone === '0000000000' || settings.storePhone.includes('90585')) {
+      settings.storePhone = '+91 85868 25438';
     }
-    if (!settings.storeAddress || settings.storeAddress === 'Noida') {
-      settings.storeAddress = 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123';
+    if (!settings.storeAddress || settings.storeAddress.includes('Kasganj') || settings.storeAddress.includes('Soron Gate')) {
+      settings.storeAddress = 'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301';
     }
-    if (!settings.storeEmail || settings.storeEmail === 'care@vkdryclean.com') {
-      settings.storeEmail = 'care@washandwow.com';
+    if (!settings.storeEmail || settings.storeEmail.includes('washandwow') || settings.storeEmail.includes('vkdryclean')) {
+      settings.storeEmail = 'jkmdryclean68@gmail.com';
     }
-    if (!settings.serviceableCities || settings.serviceableCities.length === 0 || !settings.serviceableCities.some(c => c.name === 'Kasganj')) {
+    if (settings.gstNumber === '07AAAAA0000A1Z5') {
+      settings.gstNumber = '';
+      settings.gstRate = 0;
+    }
+    if (!settings.serviceableCities || settings.serviceableCities.length === 0 || !settings.serviceableCities.some(c => c.name === 'Noida')) {
       settings.serviceableCities = defaultCities;
     }
     await settings.save();

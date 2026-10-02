@@ -89,7 +89,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
     }
   };
 
-  const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace(/^(WW|VK)-2026-/, '') || '1001'}`;
+  const invoiceNum = order.invoiceNumber || `INV-2026-${order.orderId?.replace(/^(WW|VK|JKM)-2026-/, '') || '1001'}`;
   const invoiceDate = order.createdAt
     ? new Date(order.createdAt).toLocaleDateString('en-IN', {
         day: '2-digit',
@@ -98,7 +98,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
       })
     : new Date().toLocaleDateString('en-IN');
 
-  const gstRate = Number(order.gstRate) || 5;
+  const gstRate = Number(order.gstRate ?? 0);
   const halfRate = (gstRate / 2).toFixed(1).replace('.0', '');
   const halfGstAmount = Math.round((order.gstAmount || 0) / 2);
   const remainingGstAmount = (order.gstAmount || 0) - halfGstAmount;
@@ -139,7 +139,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
           {/* Header Row */}
           <div className="invoice-header">
             <div>
-              <div className="invoice-brand-title">WASH & WOW</div>
+              <div className="invoice-brand-title">JKM DRY CLEAN</div>
               <div className="invoice-brand-tagline">From Dryclean to Laundry - We Care For Everything</div>
               <div className="invoice-store-address">
                 {storeSettings?.storeAddress ? (
@@ -149,11 +149,11 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
                   </>
                 ) : (
                   <>
-                    <span>Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, UP 207123</span>
+                    <span>Noida Sec 68, Garhi Chaukhandi, UP 201301</span>
                     <br />
                   </>
                 )}
-                Helpline: {storeSettings?.storePhone || '+91 90585 54448'} | Email: {storeSettings?.storeEmail || 'care@washandwow.com'}
+                Helpline: {storeSettings?.storePhone || '+91 85868 25438'} | Email: {storeSettings?.storeEmail || 'jkmdryclean68@gmail.com'}
                 {storeSettings?.gstNumber ? (
                   <>
                     <br />
@@ -256,9 +256,9 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
               </div>
               <div style={{ marginTop: '1.25rem', fontSize: '0.78rem', color: '#64748b' }}>
                 <strong>Bank / UPI Details:</strong><br />
-                A/C Name: WASH & WOW SERVICES<br />
-                Bank: HDFC Bank / SBI, Kasganj Branch<br />
-                UPI ID: washandwow@upi
+                A/C Name: JKM DRY CLEAN<br />
+                Bank: State Bank of India / HDFC Bank, Noida Branch<br />
+                UPI ID: 8586825438@upi
               </div>
             </div>
 
@@ -307,7 +307,7 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
               </div>
               <ol style={{ margin: 0, paddingLeft: '1rem', fontSize: '0.74rem', color: '#64748b', lineHeight: 1.4 }}>
                 <li>Please verify garments and count at the time of delivery.</li>
-                <li>Wash & Wow is not liable for color bleed due to manufacturer defect.</li>
+                <li>JKM Dry Clean is not liable for color bleed due to manufacturer defect.</li>
                 <li>Any discrepancies must be reported within 24 hours of delivery.</li>
                 <li>This is a computer generated invoice and requires no physical seal.</li>
               </ol>
@@ -316,11 +316,11 @@ const InvoiceModal = ({ order, isOpen, onClose }) => {
             <div style={{ textAlign: 'center', minWidth: '180px' }}>
               <div style={{ height: '50px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
                 <span style={{ fontFamily: 'cursive', fontSize: '1.2rem', color: 'var(--primary)', opacity: 0.8 }}>
-                  Wash & Wow
+                  JKM Dry Clean
                 </span>
               </div>
               <div style={{ borderTop: '1px solid #cbd5e1', paddingTop: '0.35rem', fontSize: '0.78rem', fontWeight: 700, color: '#0f172a' }}>
-                For WASH & WOW
+                For JKM DRY CLEAN
               </div>
               <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Authorized Signatory</div>
             </div>

@@ -11,10 +11,10 @@ const {
 } = require('../utils/emailService');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 
-// Generate unique readable order ID e.g. WW-2026-8492
+// Generate unique readable order ID e.g. JKM-2026-8492
 const generateOrderId = () => {
   const random = Math.floor(1000 + Math.random() * 9000);
-  return `VK-2026-${random}`;
+  return `JKM-2026-${random}`;
 };
 
 // @route   POST /api/orders
@@ -105,7 +105,7 @@ router.post('/', requireAuth, async (req, res) => {
     // Dynamic Delivery Fee & GST Policy set by Admin Panel
     let settings = await Settings.findOne();
     if (!settings) {
-      settings = { deliveryFee: 50, freeDeliveryThreshold: 499, gstRate: 5 };
+      settings = { deliveryFee: 50, freeDeliveryThreshold: 499, gstRate: 0 };
     }
 
     const deliveryFee = subtotal >= settings.freeDeliveryThreshold ? 0 : Number(settings.deliveryFee);
@@ -253,16 +253,37 @@ router.get('/my-orders', requireAuth, async (req, res) => {
   }
 });
 
+// @route   GET /api/orders/track/:orderId
+// @desc    Public order tracking endpoint (by human orderId like JKM-2026-XXXX)
+router.get('/track/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    let order = await Order.findOne({ orderId: orderId.trim() });
+    if (!order && /^[0-9a-fA-F]{24}$/.test(orderId)) {
+      order = await Order.findById(orderId);
+    }
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found. Please verify your Order ID.' });
+    }
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Track order error:', error);
+    res.status(500).json({ success: false, message: 'Failed to retrieve tracking info.' });
+  }
+});
+
 // @route   GET /api/orders/:id
 // @desc    Get single order details & tracking info (by Mongo ID or human orderId)
-router.get('/:id', requireAuth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     let order = null;
 
-    if (id.startsWith('WW-') || id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-') || id.startsWith('JKM-')) {
       order = await Order.findOne({ orderId: id });
-    } else {
+    } else if (/^[0-9a-fA-F]{24}$/.test(id)) {
       order = await Order.findById(id);
     }
 
@@ -270,12 +291,21 @@ router.get('/:id', requireAuth, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Order not found.' });
     }
 
-    // Security check: Only owner or admin can view order
-    if (order.userId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied. You do not have permission to view this order.',
-      });
+    // Security check: Only owner or admin can view order by raw mongo ObjectId
+    const isHumanOrderId = id.startsWith('JKM-') || id.startsWith('VK-') || id.startsWith('WW-');
+    if (!isHumanOrderId) {
+      if (!req.user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required. Please login to view this order.',
+        });
+      }
+      if (order.userId && order.userId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied. You do not have permission to view this order.',
+        });
+      }
     }
 
     res.json({ success: true, order });
@@ -334,7 +364,7 @@ router.get('/admin/orders/:id', requireAdmin, async (req, res) => {
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('WW-') || id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-') || id.startsWith('JKM-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -379,7 +409,7 @@ router.put('/admin/orders/:id/status', requireAdmin, async (req, res) => {
 
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('WW-') || id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-') || id.startsWith('JKM-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -451,7 +481,7 @@ router.post('/admin/orders/:id/send-invoice', requireAdmin, async (req, res) => 
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('WW-') || id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-') || id.startsWith('JKM-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);
@@ -487,7 +517,7 @@ router.post('/:id/email-invoice', requireAuth, async (req, res) => {
   try {
     const id = req.params.id;
     let order = null;
-    if (id.startsWith('WW-') || id.startsWith('VK-')) {
+    if (id.startsWith('WW-') || id.startsWith('VK-') || id.startsWith('JKM-')) {
       order = await Order.findOne({ orderId: id });
     } else {
       order = await Order.findById(id);

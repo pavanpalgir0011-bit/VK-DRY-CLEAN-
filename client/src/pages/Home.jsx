@@ -24,13 +24,12 @@ import { servicesAPI } from '../services/api';
 import { useCart } from '../context/CartContext';
 
 const QUICK_CATEGORIES = [
-  { name: 'Dry Clean', query: 'Dry Cleaning', icon: Sparkles },
-  { name: 'Wash & Fold', query: 'Wash & Fold', icon: Shirt },
-  { name: 'Steam Iron', query: 'Steam Iron', icon: Wind },
-  { name: 'Saree & Silk', query: 'Premium Care', icon: Crown },
-  { name: 'Suit & Blazer', query: 'Dry Cleaning', icon: Layers },
-  { name: 'Blanket / Quilt', query: 'Household', icon: BedDouble },
-  { name: 'Shoe Laundry', query: 'Footwear', icon: Footprints },
+  { name: 'Garments', query: 'Garments', icon: Shirt },
+  { name: 'Home Care', query: 'Home Care', icon: BedDouble },
+  { name: 'Shoe Care', query: 'Shoe Care', icon: Footprints },
+  { name: 'Bag Care', query: 'Bag Care', icon: Layers },
+  { name: 'Laundry', query: 'Laundry', icon: Sparkles },
+  { name: 'Others', query: 'Others', icon: Crown },
 ];
 
 const Home = () => {
@@ -149,7 +148,7 @@ const Home = () => {
                   <Sparkles size={14} /> 20% OFF
                 </span>
                 <div className="app-banner-title">First Doorstep Booking</div>
-                <div className="app-banner-desc">Use code WOWFIRST at collection for instant discount.</div>
+                <div className="app-banner-desc">Reliable pickup and on-time doorstep delivery in Noida Sec 68.</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, fontSize: '0.85rem', marginTop: '1rem' }}>
                 <span>Book Pickup Now</span>
@@ -157,12 +156,12 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/services?category=Steam+Iron" className="app-banner-card app-banner-teal">
+            <Link to="/services?category=Garments" className="app-banner-card app-banner-teal">
               <div>
                 <span className="app-banner-tag">
                   <Clock size={14} /> Express
                 </span>
-                <div className="app-banner-title">Steam Ironing @ ₹15</div>
+                <div className="app-banner-title">Steam Ironing @ ₹29+</div>
                 <div className="app-banner-desc">Crisp wrinkle-free perfection delivered in 24 hours.</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, fontSize: '0.85rem', marginTop: '1rem' }}>
@@ -171,16 +170,16 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/services?category=Premium+Care" className="app-banner-card app-banner-purple">
+            <Link to="/services?category=Shoe+Care" className="app-banner-card app-banner-purple">
               <div>
                 <span className="app-banner-tag">
-                  <Crown size={14} /> Luxury Fabric
+                  <Crown size={14} /> Footwear Spa
                 </span>
-                <div className="app-banner-title">Silk & Saree Dry Cleaning</div>
-                <div className="app-banner-desc">Zero-bleed delicate Italian hydrocarbon care.</div>
+                <div className="app-banner-title">Shoe & Sneaker Deep Clean</div>
+                <div className="app-banner-desc">Sole whitening, deodorizing & material restoration.</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, fontSize: '0.85rem', marginTop: '1rem' }}>
-                <span>Book Silk Care</span>
+                <span>Book Shoe Spa</span>
                 <ArrowRight size={14} />
               </div>
             </Link>
@@ -284,7 +283,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* How VK Dry Clean Works */}
+      {/* How JKM Dry Clean Works */}
       <section className="section-sm" style={{ backgroundColor: '#ffffff' }}>
         <div className="container" style={{ maxWidth: '1000px' }}>
           <div className="section-header" style={{ marginBottom: '2.5rem' }}>
@@ -341,27 +340,27 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Wash & Wow Kasganj Store Details Banner */}
+      {/* JKM Dry Clean Noida Sec 68 Store Details Banner */}
       <section className="section-sm" style={{ backgroundColor: '#ffffff', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container" style={{ maxWidth: '1000px' }}>
           <div className="card" style={{ padding: '2rem', border: '1.5px solid rgba(37, 99, 235, 0.15)', background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)', boxShadow: 'var(--shadow-md)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
               <div>
                 <span className="section-tag" style={{ background: '#dbeafe', color: 'var(--primary)' }}>
-                  📍 Visit Our Store in Kasganj
+                  📍 Visit Our Store in Noida Sec 68
                 </span>
                 <h3 style={{ fontSize: '1.4rem', marginTop: '0.4rem', marginBottom: '0.35rem' }}>
-                  WASH & WOW — Soron Gate Main Market
+                  JKM DRY CLEAN — Sector 68 Noida
                 </h3>
                 <p style={{ margin: 0, fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123<br />
-                  <strong style={{ color: 'var(--text-main)' }}>Timings:</strong> 10:00 AM – 8:00 PM (All 7 Days) • <strong style={{ color: 'var(--text-main)' }}>Helpline:</strong> +91 90585 54448
+                  Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301<br />
+                  <strong style={{ color: 'var(--text-main)' }}>Timings:</strong> 10:00 AM – 8:00 PM (All 7 Days) • <strong style={{ color: 'var(--text-main)' }}>Helpline:</strong> +91 85868 25438
                 </p>
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <a
-                  href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                  href="https://www.google.com/maps/search/?api=1&query=Garhi+Chaukhandi+Sector+68+Noida+201301"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary"
@@ -370,11 +369,11 @@ const Home = () => {
                   <span>Open in Google Maps ↗</span>
                 </a>
                 <a
-                  href="tel:+919058554448"
+                  href="tel:+918586825438"
                   className="btn btn-outline"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
-                  <span>Call +91 90585 54448</span>
+                  <span>Call +91 85868 25438</span>
                 </a>
               </div>
             </div>

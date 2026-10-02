@@ -27,7 +27,7 @@ const Terms = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', lineHeight: 1.7, color: 'var(--text-main)', fontSize: '0.98rem' }}>
             <p>
-              Welcome to <strong>Wash & Wow</strong>. By booking our dry cleaning, laundry, steam ironing, or doorstep delivery services, you agree to comply with and be bound by the following terms and conditions.
+              Welcome to <strong>JKM Dry Clean</strong>. By booking our dry cleaning, laundry, steam ironing, or doorstep delivery services, you agree to comply with and be bound by the following terms and conditions.
             </p>
 
             <h3 style={{ fontSize: '1.25rem' }}>1. Garment Inspection & Acceptance</h3>
@@ -47,7 +47,7 @@ const Terms = () => {
 
             <h3 style={{ fontSize: '1.25rem' }}>4. Personal Items in Pockets</h3>
             <p>
-              Please check and empty all pockets prior to handing over clothes. While we make every attempt to return discovered items (coins, pens, pins, currency), Wash & Wow cannot accept responsibility for lost personal valuables left inside garments.
+              Please check and empty all pockets prior to handing over clothes. While we make every attempt to return discovered items (coins, pens, pins, currency), JKM Dry Clean cannot accept responsibility for lost personal valuables left inside garments.
             </p>
 
             <h3 style={{ fontSize: '1.25rem' }}>5. Stain Removal Policy</h3>

@@ -70,7 +70,7 @@ const Contact = () => {
       <div className="container">
         <div className="section-header">
           <span className="section-tag">Direct Support</span>
-          <h1 className="section-title">Get in Touch with Wash & Wow</h1>
+          <h1 className="section-title">Get in Touch with JKM Dry Clean</h1>
           <p className="section-desc">
             From Dryclean to Laundry - We Care For Everything. Have questions about specialized fabrics, pickup times, or bulk orders? We're here for you.
           </p>
@@ -90,10 +90,10 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Main Workshop & Store</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.5 }}>
-                      {storeInfo.address || 'Soron Gate Main Market Rd, Jakharudder Pur, Kasganj, Uttar Pradesh 207123'}
+                      {storeInfo.address || 'Noida Sec 68, Garhi Chaukhandi, Uttar Pradesh 201301'}
                     </p>
                     <a
-                      href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                      href="https://www.google.com/maps/search/?api=1&query=Garhi+Chaukhandi+Sector+68+Noida+201301"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.4rem', fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}
@@ -110,8 +110,8 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Phone & WhatsApp</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      <a href="tel:+919058554448" style={{ color: 'inherit', fontWeight: 600 }}>
-                        {storeInfo.phone || '+91 90585 54448'}
+                      <a href="tel:+918586825438" style={{ color: 'inherit', fontWeight: 600 }}>
+                        {storeInfo.phone || '+91 85868 25438'}
                       </a>
                     </p>
                   </div>
@@ -124,8 +124,8 @@ const Contact = () => {
                   <div>
                     <h5 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>Customer Email</h5>
                     <p style={{ margin: 0, fontSize: '0.92rem' }}>
-                      <a href="mailto:care@washandwow.com" style={{ color: 'inherit' }}>
-                        {storeInfo.email || 'care@washandwow.com'}
+                      <a href="mailto:jkmdryclean68@gmail.com" style={{ color: 'inherit' }}>
+                        {storeInfo.email || 'jkmdryclean68@gmail.com'}
                       </a>
                     </p>
                   </div>
@@ -148,14 +148,14 @@ const Contact = () => {
             {/* Quick Note Card with Maps Directions */}
             <div className="card" style={{ padding: '1.5rem', background: 'var(--primary-light)', borderColor: 'rgba(37, 99, 235, 0.2)' }}>
               <h4 style={{ color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '1.05rem' }}>
-                Visit Our Kasganj Store
+                Visit Our Noida Store
               </h4>
               <p style={{ color: 'var(--text-main)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                Drop off your garments in person at Soron Gate Main Market Rd or schedule a convenient doorstep pickup online.
+                Drop off your garments in person at Noida Sec 68, Garhi Chaukhandi or schedule a convenient doorstep pickup online.
               </p>
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <a
-                  href="https://maps.app.goo.gl/ysi9iS5xStcPHFzEA"
+                  href="https://www.google.com/maps/search/?api=1&query=Garhi+Chaukhandi+Sector+68+Noida+201301"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-sm"
@@ -217,7 +217,7 @@ const Contact = () => {
                     type="tel"
                     name="phone"
                     className="form-input"
-                    placeholder="+91 90585 54448"
+                    placeholder="+91 85868 25438"
                     value={formData.phone}
                     onChange={handleChange}
                   />

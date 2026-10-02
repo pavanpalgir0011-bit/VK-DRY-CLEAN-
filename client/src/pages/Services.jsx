@@ -6,12 +6,12 @@ import { useCart } from '../context/CartContext';
 
 const CATEGORIES = [
   'All',
-  'Dry Cleaning',
-  'Wash & Fold',
-  'Steam Iron',
-  'Premium Care',
-  'Household',
-  'Footwear',
+  'Garments',
+  'Home Care',
+  'Shoe Care',
+  'Bag Care',
+  'Laundry',
+  'Others',
 ];
 
 const Services = () => {
@@ -19,8 +19,15 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get('category') || 'All';
-  const [searchQuery, setSearchQuery] = useState('');
+  const urlSearch = searchParams.get('search') || '';
+  const [searchQuery, setSearchQuery] = useState(urlSearch);
   const { addToCart, updateQuantity, cartItems } = useCart();
+
+  useEffect(() => {
+    if (urlSearch !== searchQuery) {
+      setSearchQuery(urlSearch);
+    }
+  }, [urlSearch]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -48,12 +55,13 @@ const Services = () => {
   }, [activeCategory, searchQuery]);
 
   const handleCategoryChange = (category) => {
+    const nextParams = new URLSearchParams(searchParams);
     if (category === 'All') {
-      searchParams.delete('category');
-      setSearchParams(searchParams);
+      nextParams.delete('category');
     } else {
-      setSearchParams({ category });
+      nextParams.set('category', category);
     }
+    setSearchParams(nextParams);
   };
 
   const getItemCartQuantity = (serviceId) => {
